@@ -1,0 +1,4105 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>MindSafe</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary": "#511f38",
+            "on-primary-fixed": "#2f1400",
+            "primary": "#ffc499",
+            "tertiary-container": "#e8a0bf",
+            "primary-container": "#f4a261",
+            "outline-variant": "#534439",
+            "secondary-fixed": "#e8ddff",
+            "inverse-surface": "#eee0d8",
+            "on-surface-variant": "#d8c2b5",
+            "on-surface": "#eee0d8",
+            "surface-bright": "#403832",
+            "surface": "#18120e",
+            "surface-variant": "#3b332e",
+            "tertiary": "#ffbed9",
+            "on-secondary-fixed": "#1f1243",
+            "on-tertiary-container": "#6b344f",
+            "on-secondary-fixed-variant": "#4b3f71",
+            "on-error": "#690005",
+            "surface-tint": "#ffb780",
+            "secondary": "#cdbef9",
+            "secondary-container": "#4e4174",
+            "inverse-primary": "#8e4e14",
+            "on-tertiary-fixed": "#370923",
+            "outline": "#a08d80",
+            "background": "#18120e",
+            "on-primary-fixed-variant": "#6f3800",
+            "on-primary": "#4e2600",
+            "surface-container-highest": "#3b332e",
+            "on-background": "#eee0d8",
+            "on-primary-container": "#6f3800",
+            "error": "#ffb4ab",
+            "primary-fixed-dim": "#ffb780",
+            "inverse-on-surface": "#372f2a",
+            "tertiary-fixed": "#ffd8e6",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#fbb1d1",
+            "on-tertiary-fixed-variant": "#6c354f",
+            "surface-container": "#251e19",
+            "surface-container-lowest": "#130d09",
+            "surface-container-high": "#302823",
+            "error-container": "#93000a",
+            "on-secondary": "#342859",
+            "surface-container-low": "#211a15",
+            "secondary-fixed-dim": "#cdbef9",
+            "on-secondary-container": "#bfb0ea",
+            "primary-fixed": "#ffdcc4",
+            "surface-dim": "#18120e"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1.25rem",
+            "full": "9999px",
+            "3xl": "3.5rem"
+          },
+          spacing: {
+            "section-gap": "48px",
+            "unit": "8px",
+            "gutter": "16px",
+            "container-margin": "24px",
+            "input-padding": "16px 20px"
+          },
+          fontFamily: {
+            "display-lg": ["Nunito Sans", "sans-serif"],
+            "label-md": ["Nunito Sans", "sans-serif"],
+            "title-md": ["Nunito Sans", "sans-serif"],
+            "body-md": ["Nunito Sans", "sans-serif"],
+            "headline-lg-mobile": ["Nunito Sans", "sans-serif"],
+            "headline-lg": ["Nunito Sans", "sans-serif"],
+            "body-lg": ["Nunito Sans", "sans-serif"]
+          },
+          fontSize: {
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+          },
+          backgroundImage: {
+            'welcome-gradient': 'linear-gradient(to bottom right, #0d1117, #1a1f35)',
+          },
+          boxShadow: {
+            'glow': '0 0 30px rgba(244,162,97,0.5)',
+            'bloom': '0 8px 32px rgba(244,162,97,0.15)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+    }
+
+    /* View transitions */
+    .view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .view.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+
+    /* Chat screen ocean blue background */
+    #chat-screen {
+      background: #060d1f !important;
+    }
+
+    #chat-view {
+      background: #060d1f !important;
+    }
+
+    #chat-view main {
+      background: linear-gradient(to bottom, #060d1f, #08122a) !important;
+    }
+
+
+    /* Bioluminescent Beach / Chat Screen Overrides */
+    #chat-view {
+      background: linear-gradient(180deg, #010810 0%, #010d18 40%, #010f1a 70%, #020c15 100%) !important;
+      position: relative;
+    }
+
+    #chat-view::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 100, 255, 0.02) !important;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Waves */
+    .wave-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 15vh;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      transform-origin: center bottom;
+    }
+
+    .wave1 {
+      height: 12vh;
+      background: rgba(0, 80, 160, 0.15);
+      clip-path: ellipse(60% 100% at 50% 100%);
+      animation: waveMove1 7s ease-in-out infinite alternate;
+    }
+
+    .wave2 {
+      height: 9vh;
+      background: rgba(0, 100, 180, 0.1);
+      clip-path: ellipse(55% 100% at 45% 100%);
+      animation: waveMove2 6s ease-in-out infinite alternate;
+    }
+
+    .wave3 {
+      height: 7vh;
+      background: rgba(0, 120, 200, 0.08);
+      clip-path: ellipse(50% 100% at 55% 100%);
+      animation: waveMove3 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes waveMove1 {
+      0% {
+        transform: translateY(0) scaleY(1);
+      }
+
+      100% {
+        transform: translateY(8px) scaleY(1.1);
+      }
+    }
+
+    @keyframes waveMove2 {
+      0% {
+        transform: translateY(0) scaleY(1.05);
+      }
+
+      100% {
+        transform: translateY(-6px) scaleY(0.95);
+      }
+    }
+
+    @keyframes waveMove3 {
+      0% {
+        transform: translateY(0) scaleY(0.98);
+      }
+
+      100% {
+        transform: translateY(10px) scaleY(1.15);
+      }
+    }
+
+    /* Particles */
+    .bio-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      background-color: rgba(0, 180, 255, 0.6);
+      box-shadow: 0 0 6px rgba(0, 180, 255, 0.8);
+      animation: particleDrift linear infinite;
+    }
+
+    @keyframes particleDrift {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      80% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100px) translateX(20px);
+        opacity: 0;
+      }
+    }
+
+    /* Mic Ripple Effect */
+    .mic-ripple {
+      position: absolute;
+      border: 2px solid rgba(0, 180, 255, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10;
+      transform: translate(-50%, -50%);
+      animation: rippleExpand 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    }
+
+    @keyframes rippleExpand {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+
+      100% {
+        width: 200px;
+        height: 200px;
+        opacity: 0;
+      }
+    }
+
+    /* Wave Wash Effect */
+    .wave-wash {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0, 150, 255, 0.08) 0%, rgba(0, 150, 255, 0) 50%);
+      pointer-events: none;
+      z-index: 50;
+      animation: waveWashAnim 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes waveWashAnim {
+      0% {
+        transform: translateY(100%);
+      }
+
+      100% {
+        transform: translateY(-100%);
+      }
+    }
+
+    /* Mic Breathing/Speaking animations */
+    @keyframes beachBreathing {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(0, 150, 255, 0.3), 0 0 40px rgba(0, 150, 255, 0.1), inset 0 0 15px rgba(0, 150, 255, 0.1);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 30px rgba(0, 150, 255, 0.5), 0 0 60px rgba(0, 150, 255, 0.2), inset 0 0 25px rgba(0, 150, 255, 0.25);
+        transform: scale(1.04);
+      }
+    }
+
+    @keyframes beachListeningPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 30px rgba(0, 180, 255, 0.5), 0 0 60px rgba(0, 180, 255, 0.2);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 45px rgba(0, 180, 255, 0.7), 0 0 90px rgba(0, 180, 255, 0.4);
+        transform: scale(1.06);
+      }
+    }
+
+    @keyframes beachSpeaking {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(0, 150, 255, 0.2);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 35px rgba(0, 150, 255, 0.4);
+        transform: scale(1.02);
+      }
+    }
+
+    @keyframes thinking-spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Mic Status overrides */
+    #mic-status {
+      color: rgba(0, 180, 255, 0.7) !important;
+      font-style: italic !important;
+      font-size: 16px !important;
+      text-shadow: 0 0 10px rgba(0, 150, 255, 0.4) !important;
+    }
+
+    /* Empty state glowing orb and text style */
+    .empty-orb {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #000c18;
+      box-shadow: 0 0 30px rgba(0, 150, 255, 0.5), 0 0 60px rgba(0, 150, 255, 0.2);
+      animation: orbBreathing 4s ease-in-out infinite;
+    }
+
+    @keyframes orbBreathing {
+
+      0%,
+      100% {
+        box-shadow: 0 0 30px rgba(0, 150, 255, 0.5), 0 0 60px rgba(0, 150, 255, 0.2);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 45px rgba(0, 150, 255, 0.7), 0 0 90px rgba(0, 150, 255, 0.3);
+        transform: scale(1.05);
+      }
+    }
+
+    .empty-text {
+      font-size: 16px;
+      font-style: italic;
+      color: rgba(0, 180, 255, 0.6);
+      text-shadow: 0 0 10px rgba(0, 150, 255, 0.2);
+    }
+
+    /* Main Chat canvas inner glow override */
+    #chat-messages>div.absolute.inset-0.pointer-events-none {
+      box-shadow: inset 0 0 100px rgba(0, 180, 255, 0.05) !important;
+    }
+
+    #chat-messages {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-end !important;
+      min-height: 100% !important;
+    }
+
+    /* Top AppBar Overrides */
+    header {
+      background: rgba(1, 8, 16, 0.9) !important;
+      backdrop-filter: blur(10px) !important;
+      border-bottom: 1px solid rgba(0, 100, 200, 0.2) !important;
+    }
+
+    header h1 {
+      color: #00aaff !important;
+    }
+
+    header .rounded-full {
+      border-color: rgba(0, 150, 255, 0.4) !important;
+    }
+
+    header .rounded-full span {
+      color: #00aaff !important;
+    }
+
+    /* Journal Sidebar Overrides */
+    #journal-sidebar {
+      background: rgba(0, 8, 18, 0.95) !important;
+      border-right: 1px solid rgba(0, 100, 200, 0.2) !important;
+      border-left: 1px solid rgba(0, 100, 200, 0.2) !important;
+    }
+
+    #journal-sidebar h2 {
+      color: #00aaff !important;
+    }
+
+    #journal-sidebar button.glass-card:hover {
+      border-color: rgba(0, 150, 255, 0.4) !important;
+      box-shadow: 0 0 15px rgba(0, 150, 255, 0.2) !important;
+    }
+
+    /* Crisis Overlay Overrides */
+    #crisis-overlay {
+      background: rgba(45, 10, 15, 0.95) !important;
+      backdrop-filter: blur(16px) !important;
+    }
+
+    #crisis-card {
+      background: #180d0f !important;
+      border: 1px solid rgba(255, 100, 120, 0.2) !important;
+      box-shadow: 0 0 50px rgba(239, 68, 68, 0.15) !important;
+    }
+
+    @keyframes lightRay {
+
+      0%,
+      100% {
+        opacity: 0.15;
+        transform: skewX(-5deg) scaleY(1);
+      }
+
+      50% {
+        opacity: 0.35;
+        transform: skewX(-5deg) scaleY(1.05);
+      }
+    }
+
+    @keyframes causticPattern {
+      0% {
+        opacity: 0.08;
+        transform: scale(1) rotate(0deg);
+      }
+
+      50% {
+        opacity: 0.15;
+        transform: scale(1.1) rotate(3deg);
+      }
+
+      100% {
+        opacity: 0.08;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes particleDrift {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      85% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    @keyframes bioGlow {
+
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.8;
+        transform: scale(1.3);
+      }
+    }
+
+    @keyframes depthVignette {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes sonarPing {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+      }
+    }
+
+    @keyframes depthNumber {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .depth-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .light-ray {
+      position: absolute;
+      top: -20%;
+      width: 60px;
+      background: linear-gradient(to bottom,
+          rgba(100, 220, 200, 0.3),
+          transparent);
+      transform-origin: top center;
+      pointer-events: none;
+    }
+
+    .bio-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: bioGlow ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-background text-on-background font-body-md min-h-screen overflow-hidden antialiased selection:bg-primary-container selection:text-on-primary-container">
+  <div id="chat-screen" style="display:block; width:100%; height:100%;">
+    <!-- Video Intro Screen -->
+    <div id="intro-screen" style="
+  position:fixed; inset:0; z-index:9999; 
+  background:#000; display:flex; 
+  flex-direction:column; align-items:center; 
+  justify-content:center;" onmousemove="tryResumeAudio()" onclick="tryResumeAudio()">
+
+      <video id="intro-video" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85"
+        muted playsinline>
+      </video>
+
+      <!-- Overlay text -->
+      <div id="intro-overlay-text"
+        style="position:relative;z-index:2;text-align:center;color:white;transition:opacity 1s ease-in-out;">
+        <h1 style="font-size:3rem;font-weight:300;letter-spacing:0.3em;
+      text-shadow:0 0 40px rgba(100,200,255,0.8);margin-bottom:1rem">
+          MINDSAFE
+        </h1>
+        <p style="font-size:1rem;opacity:0.7;letter-spacing:0.2em">
+          Your private sanctuary
+        </p>
+        <div id="intro-progress" style="
+      margin:2rem auto 0;width:200px;height:2px;
+      background:rgba(255,255,255,0.2);border-radius:1px">
+          <div id="intro-bar" style="
+        height:100%;width:0%;background:rgba(100,200,255,0.8);
+        border-radius:1px;transition:width 0.1s linear">
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Reveal Container (Initially Hidden) -->
+      <div id="brand-reveal-container" style="
+    position:absolute; z-index:3; text-align:center;
+    opacity:0; transition:opacity 1s ease-in-out; pointer-events:none;">
+        <div
+          style="font-size:4rem; font-weight:800; font-family:'Nunito Sans',sans-serif; line-height:1.1; letter-spacing:0.05em;">
+          <span style="color:#f0efe9">Mind</span><span id="brand-suffix"
+            style="color:#f4a261; text-shadow:0 0 40px rgba(244,162,97,0.6), 0 0 80px rgba(244,162,97,0.3); transition:opacity 0.4s ease-in-out;">Safe</span>
+        </div>
+        <div id="brand-tagline"
+          style="color:#a8e6c0; font-style:italic; font-size:1.5rem; margin-top:16px; opacity:0; transition:opacity 1s ease-in-out; font-family:'Nunito Sans',sans-serif; letter-spacing:0.05em">
+          because a safe mind is
+        </div>
+      </div>
+
+      <button id="skip-intro" onclick="skipIntro()" style="
+    position:absolute;bottom:2rem;right:2rem;
+    background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);
+    color:white;padding:0.5rem 1.2rem;border-radius:20px;
+    cursor:pointer;font-size:0.85rem;z-index:3">
+        Skip →
+      </button>
+    </div>
+
+    <audio id="bg-music" loop style="display:none">
+      <source src="assets/bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 2. MAIN CONVERSATION STATE & 4. JOURNAL SIDEBAR -->
+    <div class="view fixed inset-0 bg-surface flex-col md:flex-row" id="chat-view"
+      style="display:flex; flex-direction:column; height:100vh; overflow:hidden;">
+      <!-- SIDEBAR (Toggleable) -->
+      <aside
+        class="hidden flex-col w-[360px] bg-[#0f1220] border-r border-white/5 transition-all duration-300 z-[60] shrink-0 h-full"
+        id="journal-sidebar">
+        <div class="p-6 border-b border-white/5 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-headline-lg text-headline-lg text-primary">Your Journey ✦</h2>
+            <div class="flex items-center gap-2">
+              <button
+                class="p-2 text-on-surface-variant hover:text-on-surface transition-colors rounded-full hover:bg-white/5"
+                onclick="toggleSidebar()">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+          </div>
+          <div class="relative">
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input id="journal-search"
+              class="w-full bg-black/20 border-none rounded-2xl py-3 pl-12 pr-4 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary/50 transition-all font-body-md"
+              placeholder="Search reflections..." type="text" />
+          </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-2" id="journal-entries">
+          <!-- Journal Entry Cards -->
+        </div>
+      </aside>
+
+      <!-- MAIN CHAT AREA -->
+      <main
+        class="flex-1 flex flex-col relative min-h-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-surface-container-high/20 to-surface">
+        <!-- TopAppBar -->
+        <header
+          class="h-16 flex items-center justify-between px-container-margin bg-surface/80 backdrop-blur-md border-b border-white/5 z-10 shrink-0 relative">
+          <div class="flex items-center gap-2">
+            <button class="md:hidden p-2 text-on-surface-variant hover:text-primary transition-colors"
+              onclick="toggleSidebar()">
+              <span class="material-symbols-outlined">menu_book</span>
+            </button>
+            <button id="open-dashboard-btn" onclick="openDashboard()" style="
+                  background: rgba(100,220,200,0.1);
+                  border: 1px solid rgba(100,220,200,0.3);
+                  border-radius: 20px;
+                  padding: 6px 14px;
+                  color: rgba(100,220,200,0.8);
+                  font-family: 'Nunito Sans', sans-serif;
+                  font-size: 12px;
+                  cursor: pointer;
+                  letter-spacing: 0.1em;
+                ">⚙ Dashboard</button>
+          </div>
+          <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary"
+              style="font-variation-settings: 'FILL' 1;">favorite</span>
+            <h1 class="font-title-md text-title-md text-on-surface font-bold">MindSafe</h1>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-white/5">
+              <span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+              <span class="text-xs font-label-md text-secondary">Private • On your device</span>
+            </div>
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors hidden md:block"
+              onclick="toggleSidebar()" title="Journal">
+              <span class="material-symbols-outlined">menu_book</span>
+            </button>
+            <button class="p-2 text-error/80 hover:text-error transition-colors" onclick="showCrisisOverlay()"
+              title="Emergency Help">
+              <span class="material-symbols-outlined">emergency</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Chat Canvas Wrapper -->
+        <div style="flex:1; overflow-y:auto; overflow-x:hidden; padding:20px;">
+          <div id="chat-messages" class="flex flex-col gap-6 relative">
+            <!-- Inner Glow Border Effect via overlay -->
+            <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(255,196,153,0.03)] z-0"></div>
+            <!-- Empty State Content -->
+            <div id="empty-state"
+              class="flex-1 flex flex-col items-center justify-center text-center max-w-md mx-auto z-10">
+              <div class="empty-orb mb-6"></div>
+              <p class="empty-text">I'm here whenever you're ready.</p>
+              <p style="color:rgba(0,150,255,0.4); font-size:13px; margin-top:8px; font-style:italic">
+                Tip: Use headphones for best experience
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Area -->
+        <div style="flex-shrink:0; padding:20px 0; text-align:center; background:transparent;">
+          <div class="max-w-2xl mx-auto flex flex-col items-center justify-center relative">
+            <button id="end-session-btn" onclick="confirmEndSession()" style="
+                  background: transparent;
+                  border: 1px solid rgba(244,162,97,0.3);
+                  border-radius: 20px;
+                  padding: 6px 16px;
+                  color: rgba(244,162,97,0.6);
+                  font-family: 'Nunito Sans', sans-serif;
+                  font-size: 12px;
+                  cursor: pointer;
+                  letter-spacing: 0.1em;
+                  margin-bottom: 8px;
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                ">End Session</button>
+            <!-- Pulsing Mic Button -->
+            <button id="mic-btn" onclick="handleMicClick()" disabled style="opacity: 0.5"
+              class="w-[80px] h-[80px] rounded-full bg-surface-container border border-primary/20 flex items-center justify-center pulse-breathing group hover:bg-surface-container-high transition-colors">
+              <span
+                class="material-symbols-outlined text-[32px] text-primary group-hover:scale-110 transition-transform">mic</span>
+            </button>
+            <p id="mic-status"
+              style="color:#b8a9e3; font-style:italic; font-size:16px; text-align:center; margin-top:12px">
+              Loading AI models...
+            </p>
+            <!-- Text chat input bar -->
+            <div id="text-input-area"
+              style="display:flex; gap:8px; padding:0 16px 8px; align-items:center; width:100%; max-width:500px; margin: 8px auto;">
+              <input id="text-input" type="text" placeholder="Or type here..."
+                style="flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(184,169,227,0.2); border-radius:24px; padding:10px 16px; color:#f0efe9; font-size:15px; font-family:'Nunito Sans', sans-serif; outline:none;"
+                onkeydown="if(event.key==='Enter') sendTextMessage()">
+              <button onclick="sendTextMessage()"
+                style="background:rgba(244,162,97,0.2); border:1px solid rgba(244,162,97,0.3); border-radius:50%; width:40px; height:40px; color:#f4a261; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">➤</button>
+            </div>
+            <p style="color:rgba(238,224,216,0.3); font-size:12px; text-align:center; margin-top:16px">
+              Powered by local AI — your words stay with you, always. 🔒
+            </p>
+          </div>
+        </div>
+      </main>
+      <!-- Bioluminescent Waves at bottom -->
+      <div class="wave-container">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
+      </div>
+    </div>
+
+    <!-- 3. CRISIS OVERLAY -->
+    <div
+      class="fixed inset-0 bg-[rgba(120,20,30,0.92)] backdrop-blur-xl z-[100] hidden items-center justify-center p-4 transition-opacity duration-300 opacity-0"
+      id="crisis-overlay">
+      <div
+        class="bg-surface border border-white/10 rounded-[56px] p-8 md:p-12 max-w-lg w-full text-center shadow-2xl transform scale-95 transition-transform duration-300"
+        id="crisis-card">
+        <div class="w-16 h-16 bg-error/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <span class="material-symbols-outlined text-[32px] text-error"
+            style="font-variation-settings: 'FILL' 1;">favorite</span>
+        </div>
+        <h2 class="font-display-lg text-[36px] text-on-surface font-bold mb-4" id="crisis-headline">You are not alone.
+        </h2>
+        <p class="font-body-md text-on-surface-variant mb-4" id="crisis-subtext">Help is available right now. Free,
+          confidential support is just a tap away.</p>
+
+        <!-- Helpline info area -->
+        <p class="font-title-md text-[#ffb4ab] font-bold mb-6" id="crisis-helpline-container">
+          Helpline: <span id="crisis-helpline-name">iCall</span>
+          (<span id="crisis-phone">9152987821</span>)
+        </p>
+
+        <div class="space-y-4 mb-4" id="crisis-buttons-container">
+          <button id="crisis-call-btn"
+            class="w-full py-4 px-6 bg-error text-on-error font-title-md text-title-md rounded-[56px] font-bold shadow-[0_4px_20px_rgba(255,180,171,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-transform flex items-center justify-center gap-3">
+            <span class="material-symbols-outlined">call</span>
+            Call Helpline
+          </button>
+          <button id="crisis-sms-btn"
+            class="w-full py-4 px-6 bg-secondary/10 border-2 border-secondary text-secondary font-title-md text-title-md rounded-[56px] font-bold hover:bg-secondary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+            <span class="material-symbols-outlined">chat</span>
+            Text Helpline
+          </button>
+        </div>
+        <button
+          class="mt-8 text-on-surface-variant hover:text-on-surface font-label-md transition-colors px-6 py-2 rounded-full hover:bg-white/5"
+          onclick="hideCrisisOverlay()">
+          Return to MindSafe
+        </button>
+      </div>
+    </div>
+
+    <!-- MEDICAL PANEL OVERLAY -->
+    <div
+      class="fixed inset-0 bg-black/80 backdrop-blur-md z-[80] hidden items-center justify-center p-4 transition-opacity duration-300 opacity-0"
+      id="medical-panel-overlay">
+      <div
+        style="background: #1a1f35; border: 1px solid rgba(184,169,227,0.2); color: #f0efe9; font-family: 'Nunito Sans', sans-serif;"
+        class="rounded-[40px] p-8 md:p-10 max-w-xl w-full shadow-2xl relative" id="medical-panel-card">
+        <!-- Close Button -->
+        <button
+          class="absolute top-6 right-6 text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-white/5 transition-colors"
+          onclick="hideMedicalPanel()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <h2 class="font-display-lg text-[28px] font-bold mb-2 flex items-center gap-2" style="color: #f4a261">
+          <span class="material-symbols-outlined">medical_information</span> Medical Profile
+        </h2>
+        <p style="color: rgba(184,169,227,0.6);" class="text-sm mb-6">Keep your medical details updated to help MindSafe
+          tailor its support.</p>
+
+        <!-- Section 1: Upload -->
+        <div class="mb-6 p-4 rounded-2xl bg-white/5 border border-white/5 space-y-3">
+          <h3 class="font-bold text-[16px]">Upload Medical Record</h3>
+          <p style="color: rgba(184,169,227,0.5);" class="text-xs">PDF, text, or image file — we'll extract the details
+            automatically</p>
+          <div class="flex items-center gap-3 flex-wrap">
+            <input type="file" id="med-file-upload" accept=".pdf,.txt,.jpg,.jpeg,.png,.webp,.bmp"
+              style="font-size: 13px;"
+              class="file:bg-white/10 file:border-none file:text-[#f0efe9] file:px-3 file:py-1.5 file:rounded-full file:cursor-pointer hover:file:bg-white/20">
+            <button onclick="extractMedicalRecord()" style="background: #f4a261; color: #1a1f35;"
+              class="px-4 py-1.5 rounded-full font-bold text-xs hover:scale-105 transition-transform">Extract ↑</button>
+          </div>
+          <p id="med-extract-status" style="color: #f4a261; font-size: 12px; font-style: italic; min-height: 18px;"></p>
+        </div>
+
+        <!-- Section 2: Manual Form -->
+        <div class="mb-6 space-y-4">
+          <h3 class="font-bold text-[16px]">Or fill in manually</h3>
+          <div class="space-y-3">
+            <input id="med-conditions" placeholder="Conditions (e.g. anxiety, PTSD)"
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm placeholder:text-white/20 focus:outline-none focus:border-[#f4a261] transition-colors">
+            <input id="med-medications" placeholder="Medications (e.g. sertraline 50mg)"
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm placeholder:text-white/20 focus:outline-none focus:border-[#f4a261] transition-colors">
+            <textarea id="med-notes" placeholder="Anything else MindSafe should know..." rows="3"
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm placeholder:text-white/20 focus:outline-none focus:border-[#f4a261] transition-colors"></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-between border-t border-white/5 pt-6">
+          <div class="flex items-center gap-3">
+            <button onclick="saveMedicalRecords()" style="background: #f4a261; color: #1a1f35;"
+              class="px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 active:scale-95 transition-transform shadow-lg">Save
+              Profile</button>
+            <button onclick="clearMedicalRecords()"
+              class="bg-white/5 hover:bg-white/10 px-6 py-2.5 rounded-full text-sm hover:scale-105 active:scale-95 transition-all">Clear</button>
+          </div>
+          <div class="text-right">
+            <p id="med-status" style="color: #a8e6c0; font-size: 12px; font-weight: bold; min-height: 18px;"></p>
+            <p id="med-last-updated" style="color: rgba(184,169,227,0.4); font-size: 11px;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SCREEN -->
+  <div id="dashboard-screen" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(8,15,35,0.98), rgba(5,10,25,0.99));
+  z-index: 5000;
+  font-family: 'Nunito Sans', sans-serif;
+  overflow: hidden;
+">
+    <!-- Depth Canvas Layer -->
+    <div id="depth-canvas" style="
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+    transition: background 1.5s ease;
+  "></div>
+
+    <!-- Vignette overlay -->
+    <div id="depth-vignette" style="
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 1.5s ease;
+    background: radial-gradient(ellipse at center,
+      transparent 30%,
+      rgba(0,0,20,0.0) 70%,
+      rgba(0,0,20,0.0) 100%
+    );
+  "></div>
+
+    <!-- Sonar ping layer -->
+    <div id="sonar-layer" style="
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  "></div>
+
+    <!-- Depth meter -->
+    <div id="depth-meter" style="
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+  ">
+      <span id="depth-zone-label" style="
+      color: rgba(100,220,200,0.4);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      writing-mode: vertical-rl;
+      font-family: 'Nunito Sans', sans-serif;
+      transition: all 0.5s ease;
+    ">SURFACE</span>
+      <div style="
+      width: 2px;
+      height: 140px;
+      background: linear-gradient(
+        to bottom,
+        rgba(100,220,200,0.6),
+        rgba(184,169,227,0.1)
+      );
+      border-radius: 2px;
+      position: relative;
+    ">
+        <div id="depth-marker" style="
+        position: absolute;
+        top: 0;
+        left: -3px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(100,220,200,0.8);
+        box-shadow: 0 0 6px rgba(100,220,200,0.6);
+        transition: top 0.8s cubic-bezier(0.4,0,0.2,1);
+      "></div>
+      </div>
+      <span id="depth-number" style="
+      color: rgba(100,220,200,0.5);
+      font-size: 10px;
+      font-family: 'Nunito Sans', sans-serif;
+      letter-spacing: 0.1em;
+      transition: all 0.5s ease;
+      animation: depthNumber 0.5s ease forwards;
+    ">0m</span>
+    </div>
+
+    <!-- MindSafe title -->
+    <div style="
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 5;
+  ">
+      <p style="
+      color: rgba(100,220,200,0.9);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      margin: 0;
+      text-shadow: 0 0 20px rgba(100,220,200,0.4);
+    ">MindSafe</p>
+      <p style="
+      color: rgba(184,169,227,0.4);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      font-style: italic;
+      margin: 4px 0 0;
+    ">because a safe mind is MindSaved</p>
+      <p id="welcome-name" style="
+      color: rgba(100,220,200,0.6);
+      font-size: 13px;
+      font-style: italic;
+      margin-top: 12px;
+      letter-spacing: 0.05em;
+    "></p>
+    </div>
+
+    <!-- SHORELINE PATH NAVIGATION -->
+    <div id="shoreline-nav" style="
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 5;
+  ">
+      <!-- Animated shoreline wave -->
+      <div style="width:100%; height:60px; position:relative; overflow:hidden;">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none"
+          style="width:100%; height:100%; position:absolute; bottom:0;">
+          <path fill="rgba(100,220,200,0.15)" d="M0,30 C360,60 720,0 1080,30 C1260,45 1350,35 1440,30 L1440,60 L0,60 Z">
+            <animate attributeName="d" dur="4s" repeatCount="indefinite" values="
+              M0,30 C360,60 720,0 1080,30 C1260,45 1350,35 1440,30 L1440,60 L0,60 Z;
+              M0,35 C360,10 720,50 1080,25 C1260,15 1350,40 1440,35 L1440,60 L0,60 Z;
+              M0,30 C360,60 720,0 1080,30 C1260,45 1350,35 1440,30 L1440,60 L0,60 Z
+            " />
+          </path>
+          <path fill="rgba(184,169,227,0.1)" d="M0,40 C360,20 720,50 1080,35 C1260,28 1350,42 1440,40 L1440,60 L0,60 Z">
+            <animate attributeName="d" dur="6s" repeatCount="indefinite" values="
+              M0,40 C360,20 720,50 1080,35 C1260,28 1350,42 1440,40 L1440,60 L0,60 Z;
+              M0,35 C360,50 720,20 1080,40 C1260,48 1350,30 1440,35 L1440,60 L0,60 Z;
+              M0,40 C360,20 720,50 1080,35 C1260,28 1350,42 1440,40 L1440,60 L0,60 Z
+            " />
+          </path>
+        </svg>
+      </div>
+
+      <!-- Tab markers -->
+      <div style="
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 16px 0 24px;
+      width: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(5,10,25,0.8));
+    ">
+        <div onclick="navigateToTab('breathing')" class="shore-tab" data-tab="breathing"
+          style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; opacity:0.6; transition:all 0.3s ease;"
+          onmouseover="this.style.opacity='1'; this.style.transform='translateY(-4px)'"
+          onmouseout="this.style.opacity=window.activeTab==='breathing'?'1':'0.6'; this.style.transform=window.activeTab==='breathing'?'translateY(-4px)':'translateY(0)'">
+          <span
+            style="font-size:20px; color:rgba(100,220,200,0.8); text-shadow:0 0 10px rgba(100,220,200,0.4);">〜</span>
+          <span style="font-size:11px; color:rgba(240,239,233,0.6); letter-spacing:0.1em;">Breathing Room</span>
+          <div class="shore-dot"
+            style="width:4px; height:4px; border-radius:50%; background:rgba(100,220,200,0.4); transition:all 0.3s ease;">
+          </div>
+        </div>
+
+        <div onclick="navigateToTab('profile')" class="shore-tab" data-tab="profile"
+          style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; opacity:0.6; transition:all 0.3s ease;"
+          onmouseover="this.style.opacity='1'; this.style.transform='translateY(-4px)'"
+          onmouseout="this.style.opacity=window.activeTab==='profile'?'1':'0.6'; this.style.transform=window.activeTab==='profile'?'translateY(-4px)':'translateY(0)'">
+          <span
+            style="font-size:20px; color:rgba(100,220,200,0.8); text-shadow:0 0 10px rgba(100,220,200,0.4);">◈</span>
+          <span style="font-size:11px; color:rgba(240,239,233,0.6); letter-spacing:0.1em;">Profile</span>
+          <div class="shore-dot"
+            style="width:4px; height:4px; border-radius:50%; background:rgba(100,220,200,0.4); transition:all 0.3s ease;">
+          </div>
+        </div>
+
+        <div onclick="navigateToTab('journal')" class="shore-tab" data-tab="journal"
+          style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; opacity:0.6; transition:all 0.3s ease;"
+          onmouseover="this.style.opacity='1'; this.style.transform='translateY(-4px)'"
+          onmouseout="this.style.opacity=window.activeTab==='journal'?'1':'0.6'; this.style.transform=window.activeTab==='journal'?'translateY(-4px)':'translateY(0)'">
+          <span
+            style="font-size:20px; color:rgba(100,220,200,0.8); text-shadow:0 0 10px rgba(100,220,200,0.4);">◎</span>
+          <span style="font-size:11px; color:rgba(240,239,233,0.6); letter-spacing:0.1em;">Journal</span>
+          <div class="shore-dot"
+            style="width:4px; height:4px; border-radius:50%; background:rgba(100,220,200,0.4); transition:all 0.3s ease;">
+          </div>
+        </div>
+
+        <div onclick="navigateToTab('medical')" class="shore-tab" data-tab="medical"
+          style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; opacity:0.6; transition:all 0.3s ease;"
+          onmouseover="this.style.opacity='1'; this.style.transform='translateY(-4px)'"
+          onmouseout="this.style.opacity=window.activeTab==='medical'?'1':'0.6'; this.style.transform=window.activeTab==='medical'?'translateY(-4px)':'translateY(0)'">
+          <span
+            style="font-size:20px; color:rgba(100,220,200,0.8); text-shadow:0 0 10px rgba(100,220,200,0.4);">✦</span>
+          <span style="font-size:11px; color:rgba(240,239,233,0.6); letter-spacing:0.1em;">Medical</span>
+          <div class="shore-dot"
+            style="width:4px; height:4px; border-radius:50%; background:rgba(100,220,200,0.4); transition:all 0.3s ease;">
+          </div>
+        </div>
+
+        <div onclick="navigateToTab('analysis')" class="shore-tab" data-tab="analysis"
+          style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; opacity:0.6; transition:all 0.3s ease;"
+          onmouseover="this.style.opacity='1'; this.style.transform='translateY(-4px)'"
+          onmouseout="this.style.opacity=window.activeTab==='analysis'?'1':'0.6'; this.style.transform=window.activeTab==='analysis'?'translateY(-4px)':'translateY(0)'">
+          <span
+            style="font-size:20px; color:rgba(100,220,200,0.8); text-shadow:0 0 10px rgba(100,220,200,0.4);">◉</span>
+          <span style="font-size:11px; color:rgba(240,239,233,0.6); letter-spacing:0.1em;">Analysis</span>
+          <div class="shore-dot"
+            style="width:4px; height:4px; border-radius:50%; background:rgba(100,220,200,0.4); transition:all 0.3s ease;">
+          </div>
+        </div>
+
+        <div onclick="navigateToTab('export')" class="shore-tab" data-tab="export"
+          style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; opacity:0.6; transition:all 0.3s ease;"
+          onmouseover="this.style.opacity='1'; this.style.transform='translateY(-4px)'"
+          onmouseout="this.style.opacity=window.activeTab==='export'?'1':'0.6'; this.style.transform=window.activeTab==='export'?'translateY(-4px)':'translateY(0)'">
+          <span
+            style="font-size:20px; color:rgba(100,220,200,0.8); text-shadow:0 0 10px rgba(100,220,200,0.4);">⬡</span>
+          <span style="font-size:11px; color:rgba(240,239,233,0.6); letter-spacing:0.1em;">Export</span>
+          <div class="shore-dot"
+            style="width:4px; height:4px; border-radius:50%; background:rgba(100,220,200,0.4); transition:all 0.3s ease;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPTH CONTENT AREA -->
+    <div id="dashboard-content" style="
+    position: absolute;
+    top: 100px;
+    left: 0; right: 0;
+    bottom: 180px;
+    overflow-y: auto;
+    padding: 24px 40px;
+    z-index: 5;
+  ">
+      <div id="tab-content" style="max-width:800px; margin:0 auto;"></div>
+    </div>
+
+    <!-- NEW CONVERSATION button inside dashboard top right -->
+    <button onclick="startNewConversation()" style="
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(244,162,97,0.15);
+    border: 1px solid rgba(244,162,97,0.4);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: rgba(244,162,97,0.9);
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 10;
+    letter-spacing: 0.1em;
+  ">+ New Conversation</button>
+
+  </div>
+
+  <script>
+    // --- 4. RECORDING AND UI STATE VARIABLES ---
+    let currentMicState = 'idle';
+    let currentAudio = null;
+
+    const DASH_STYLES = {
+      card: `background:rgba(255,255,255,0.03); border:1px solid rgba(100,220,200,0.1); border-radius:16px; padding:20px; margin-bottom:16px;`,
+      label: `color:rgba(184,169,227,0.7); font-size:12px; letter-spacing:0.1em; margin-bottom:6px; display:block;`,
+      input: `width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(184,169,227,0.2); border-radius:10px; padding:10px 14px; color:#f0efe9; font-family:'Nunito Sans',sans-serif; font-size:14px; outline:none; box-sizing:border-box;`,
+      btn: `background:rgba(100,220,200,0.1); border:1px solid rgba(100,220,200,0.3); border-radius:10px; padding:8px 20px; color:rgba(100,220,200,0.9); font-family:'Nunito Sans',sans-serif; font-size:13px; cursor:pointer;`,
+      btnAccent: `background:rgba(244,162,97,0.1); border:1px solid rgba(244,162,97,0.3); border-radius:10px; padding:8px 20px; color:rgba(244,162,97,0.9); font-family:'Nunito Sans',sans-serif; font-size:13px; cursor:pointer;`,
+      heading: `color:rgba(240,239,233,0.9); font-size:20px; font-weight:600; margin-bottom:4px;`,
+      subheading: `color:rgba(184,169,227,0.5); font-size:13px; font-style:italic; margin-bottom:24px;`,
+      section: `margin-bottom:32px;`
+    }
+
+    function transitionTo(viewId) {
+      document.querySelectorAll('.view').forEach(el => {
+        el.classList.remove('active');
+        setTimeout(() => {
+          if (!el.classList.contains('active')) el.style.display = 'none';
+        }, 500); // Wait for fade out
+      });
+
+      const target = document.getElementById(viewId);
+      target.style.display = 'flex';
+      // Slight delay to allow display:flex to apply before fading in
+      setTimeout(() => {
+        target.classList.add('active');
+        // State initialization when chat view loads is handled after AI engines are verified ready
+      }, 50);
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('journal-sidebar');
+      if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('flex');
+        loadJournalEntries();
+      } else {
+        sidebar.classList.add('hidden');
+        sidebar.classList.remove('flex');
+      }
+    }
+
+    async function showCrisisOverlay(crisisData) {
+      if (!crisisData) {
+        try {
+          crisisData = await window.electronAPI.getCrisisData();
+        } catch (e) {
+          console.error("Failed to load crisis data:", e);
+        }
+      }
+      const nameEl = document.getElementById('crisis-helpline-name')
+      if (nameEl) nameEl.textContent = crisisData?.helpline || 'iCall'
+
+      const phoneEl = document.getElementById('crisis-phone')
+      if (phoneEl) phoneEl.textContent = crisisData?.phone || '9152987821'
+
+      const callBtn = document.getElementById('crisis-call-btn')
+      if (callBtn) {
+        const phone = crisisData?.phone || '9152987821';
+        const canCall = crisisData ? crisisData.canCall : true;
+        if (canCall && phone) {
+          callBtn.style.display = 'flex'
+          callBtn.onclick = () => window.electronAPI.triggerCall(phone)
+        } else {
+          callBtn.style.display = 'none'
+        }
+      }
+
+      const smsBtn = document.getElementById('crisis-sms-btn')
+      if (smsBtn) {
+        const sms = crisisData?.sms || '9152987821';
+        const canSMS = crisisData ? crisisData.canSMS : true;
+        if (canSMS && sms) {
+          smsBtn.style.display = 'flex'
+          smsBtn.onclick = () => window.electronAPI.triggerSMS(sms)
+        } else {
+          smsBtn.style.display = 'none'
+        }
+      }
+
+      const overlay = document.getElementById('crisis-overlay')
+      if (overlay) {
+        overlay.style.display = 'flex'
+        overlay.classList.remove('hidden')
+      }
+
+      // Hide background scrolling when crisis is active
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+
+      const card = document.getElementById('crisis-card')
+      if (overlay && card) {
+        setTimeout(() => {
+          overlay.classList.remove('opacity-0');
+          card.classList.remove('scale-95');
+          card.classList.add('scale-100');
+        }, 10);
+      }
+    }
+
+    function hideCrisisOverlay() {
+      const overlay = document.getElementById('crisis-overlay')
+      if (overlay) {
+        overlay.style.display = 'none'
+        overlay.classList.add('hidden')
+      }
+
+      // Reset ALL state
+      currentMicState = 'idle'
+      setMicState('idle')
+
+      // Stop any playing audio
+      if (currentAudio) {
+        currentAudio.pause()
+        currentAudio = null
+      }
+
+      // Remove any breathing animations
+      hideBreathingAnimation()
+
+      // Remove typing indicators
+      const indicator = document.getElementById('typing-indicator')
+      if (indicator) indicator.remove()
+
+      // Re-enable scrolling
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
+
+    // --- 1. BRAND ANIMATION (SMOOTH WHOLE-WORD MORPH) ---
+    function runBrandAnimation() {
+      const word = document.getElementById('brand-word');
+      const middle = document.getElementById('middle-text');
+
+      if (!word || !middle) return;
+
+      const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+      const sequence = async () => {
+        // Step 1: Show MindSafe (2s)
+        word.textContent = 'Safe';
+        middle.style.opacity = '0';
+        await delay(2000);
+
+        // Step 2: Fade in middle text (1s)
+        middle.style.opacity = '1';
+        await delay(1000);
+
+        // Step 3: Morph to MindSaved (0.5s)
+        word.style.transition = 'opacity 0.3s';
+        word.style.opacity = '0';
+        await delay(300);
+        word.textContent = 'Saved';
+        word.style.opacity = '1';
+        await delay(2000);
+
+        // Step 4: Fade out middle (1s)
+        middle.style.opacity = '0';
+        await delay(1000);
+
+        // Step 5: Morph back to MindSafe (0.5s)
+        word.style.opacity = '0';
+        await delay(300);
+        word.textContent = 'Safe';
+        word.style.opacity = '1';
+        await delay(1000);
+
+        // Loop
+        sequence();
+      }
+
+      sequence();
+    }
+
+    // --- 3. setMicState(state) ---
+    function setMicState(state) {
+      currentMicState = state;
+      const btn = document.getElementById('mic-btn');
+      const status = document.getElementById('mic-status');
+      const icon = btn ? btn.querySelector('.material-symbols-outlined') : null;
+
+      if (!btn || !status || !icon) return;
+
+      // Reset classes and custom styles for bioluminescent beach world
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.className = 'w-[80px] h-[80px] rounded-full border flex items-center justify-center group transition-colors';
+      btn.style.background = 'radial-gradient(circle, #001525 0%, #000d18 100%)';
+      btn.style.borderColor = 'rgba(0,150,255,0.3)';
+      btn.style.boxShadow = '0 0 20px rgba(0,150,255,0.3), 0 0 40px rgba(0,150,255,0.1), inset 0 0 15px rgba(0,150,255,0.1)';
+      icon.className = 'material-symbols-outlined text-[32px] group-hover:scale-110 transition-transform';
+      icon.style.color = '#00aaff';
+      icon.textContent = 'mic';
+
+      btn.style.animation = '';
+
+      if (state === 'idle') {
+        btn.style.animation = 'beachBreathing 4s ease-in-out infinite';
+        status.textContent = "I'm here. Take your time.";
+        status.style.color = 'rgba(0,180,255,0.7)';
+      } else if (state === 'listening') {
+        btn.style.animation = 'beachListeningPulse 1.5s ease-in-out infinite';
+        btn.style.borderColor = 'rgba(0,180,255,0.5)';
+        icon.style.color = '#00ccff';
+        status.textContent = "Listening...";
+        status.style.color = '#00ccff';
+        createRipple();
+      } else if (state === 'thinking') {
+        icon.textContent = 'progress_activity';
+        icon.style.color = 'rgba(0,200,180,0.8)';
+        btn.style.animation = 'thinking-spin 2s linear infinite';
+        btn.style.borderColor = 'rgba(0, 200, 180, 0.3)';
+        btn.style.boxShadow = '0 0 30px rgba(0, 200, 180, 0.4)';
+        status.textContent = "Thinking just for you...";
+        status.style.color = '#00ddcc';
+      } else if (state === 'speaking') {
+        btn.style.animation = 'beachSpeaking 3s ease-in-out infinite';
+        icon.style.color = '#00aaff';
+        status.textContent = "Speaking...";
+        status.style.color = '#00aaff';
+      }
+    }
+
+    // --- 4. typing indicator helpers ---
+    function addTypingIndicator() {
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) {
+        emptyState.remove();
+      }
+
+      const chatMessages = document.getElementById('chat-messages');
+      if (!chatMessages) return null;
+
+      const wrapper = document.createElement('div');
+      const indicatorId = 'typing-indicator-' + Date.now();
+      wrapper.id = indicatorId;
+      wrapper.className = 'flex w-full z-10 justify-start';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'rounded-2xl p-4 max-w-[85%] text-on-background font-body-md flex flex-col gap-1';
+      bubble.style.background = 'rgba(0,20,40,0.85)';
+      bubble.style.border = 'none';
+      bubble.style.borderLeft = '3px solid rgba(0,150,255,0.5)';
+      bubble.style.boxShadow = '0 0 20px rgba(0,100,200,0.1), inset 0 0 10px rgba(0,100,200,0.05)';
+
+      const labelRow = document.createElement('div');
+      labelRow.className = 'flex items-center gap-2 text-xs font-semibold';
+      const labelText = document.createElement('span');
+      labelText.textContent = 'MindSafe';
+      labelText.style.color = '#00aaff';
+      labelRow.appendChild(labelText);
+      bubble.appendChild(labelRow);
+
+      const dots = document.createElement('div');
+      dots.className = 'flex items-center gap-1.5 py-1';
+      dots.innerHTML = `
+            <span class="w-2 h-2 bg-[#00aaff] rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+            <span class="w-2 h-2 bg-[#00aaff] rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+            <span class="w-2 h-2 bg-[#00aaff] rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+        `;
+      bubble.appendChild(dots);
+
+      wrapper.appendChild(bubble);
+      chatMessages.appendChild(wrapper);
+
+      const scrollArea = document.querySelector('#chat-messages').closest('[style*="overflow-y"]') || document.querySelector('#chat-messages').parentElement;
+      if (scrollArea) {
+        scrollArea.scrollTop = scrollArea.scrollHeight;
+      }
+
+      return indicatorId;
+    }
+
+    function removeTypingIndicator(indicatorId) {
+      if (!indicatorId) return;
+      const indicator = document.getElementById(indicatorId);
+      if (indicator) {
+        indicator.remove();
+      }
+    }
+
+    // --- 8. handleMicClick ---
+    async function handleMicClick() {
+      console.log('handleMicClick called, state:', currentMicState)
+      if (currentMicState === 'idle') {
+        currentMicState = 'listening'
+        setMicState('listening')
+        const r = await window.electronAPI.startRecording()
+        if (r.error) {
+          addMessage('Microphone error: ' + r.error, 'assistant')
+          currentMicState = 'idle'
+          setMicState('idle')
+        }
+
+      } else if (currentMicState === 'listening') {
+        currentMicState = 'thinking'
+        setMicState('thinking')
+        const indicatorId = addTypingIndicator()
+
+        const result = await window.electronAPI.stopRecording()
+
+        removeTypingIndicator(indicatorId)
+
+        if (result.error) {
+          addMessage('Sorry something went wrong. Please try again.', 'assistant')
+          currentMicState = 'idle'
+          setMicState('idle')
+          return
+        }
+
+        if (result.transcribedText && result.transcribedText.trim()) {
+          addMessage(result.transcribedText, 'user')
+        }
+
+        addMessage(result.responseText, 'assistant')
+
+        if (result.isClosing) {
+          showMoodCheck()
+        }
+
+        if (result.isCrisis) {
+          showCrisisOverlay(result.crisisData)
+
+          // Play crisis voice
+          try {
+            if (currentAudio) {
+              currentAudio.pause()
+              currentAudio = null
+            }
+            currentAudio = new Audio('file:///C:/MindSafe/audio-samples/response.wav?t=' + Date.now())
+            currentAudio.play()
+            currentAudio.onended = () => {
+              currentMicState = 'idle'
+              setMicState('idle')
+              currentAudio = null
+            }
+          } catch (e) {
+            currentMicState = 'idle'
+            setMicState('idle')
+            currentAudio = null
+          }
+          return
+        }
+
+        if (!result.responseText.includes("didn't catch")) {
+          setMicState('speaking')
+          currentMicState = 'speaking'
+          if (currentAudio) {
+            currentAudio.pause()
+            currentAudio = null
+          }
+          currentAudio = new Audio('file:///C:/MindSafe/audio-samples/response.wav?t=' + Date.now())
+          currentAudio.play()
+          currentAudio.onended = () => {
+            currentMicState = 'idle'
+            setMicState('idle')
+            currentAudio = null
+          }
+        } else {
+          currentMicState = 'idle'
+          setMicState('idle')
+        }
+      }
+    }
+    window.handleMicClick = handleMicClick;
+
+    // --- 4. addMessage ---
+    function addMessage(text, sender) {
+      // (breathing animation removed — mic button state is sufficient feedback)
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) {
+        emptyState.remove();
+      }
+
+      const chatMessages = document.getElementById('chat-messages');
+      if (!chatMessages) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex w-full z-10';
+      if (sender === 'user') {
+        wrapper.classList.add('justify-end');
+      } else {
+        wrapper.classList.add('justify-start');
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = 'rounded-2xl p-4 max-w-[85%] text-on-background font-body-md flex flex-col gap-1';
+
+      if (sender === 'user') {
+        bubble.style.background = 'rgba(100,220,200,0.15)';
+        bubble.style.border = '1px solid rgba(100,220,200,0.25)';
+        bubble.style.borderRadius = '16px';
+        bubble.style.padding = '12px 16px';
+        bubble.style.color = '#f0efe9';
+      } else {
+        bubble.style.background = 'rgba(20,35,70,0.8)';
+        bubble.style.border = '1px solid rgba(184,169,227,0.15)';
+        bubble.style.borderRadius = '16px';
+        bubble.style.padding = '12px 16px';
+        bubble.style.color = '#f0efe9';
+        bubble.style.boxShadow = '0 0 20px rgba(100,180,255,0.05), inset 0 0 10px rgba(100,150,255,0.03)';
+      }
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const labelRow = document.createElement('div');
+      labelRow.className = 'flex items-center gap-2 text-xs font-semibold';
+
+      const labelText = document.createElement('span');
+      if (sender === 'user') {
+        labelText.textContent = 'You';
+        labelText.style.color = 'rgba(0,220,255,0.8)';
+      } else {
+        labelText.textContent = 'MindSafe';
+        labelText.style.color = '#00aaff';
+      }
+
+      const timeText = document.createElement('span');
+      timeText.className = 'text-xs text-on-surface-variant/40';
+      timeText.textContent = timeStr;
+
+      labelRow.appendChild(labelText);
+      labelRow.appendChild(timeText);
+      bubble.appendChild(labelRow);
+
+      const textParagraph = document.createElement('p');
+      textParagraph.className = 'leading-relaxed';
+      textParagraph.textContent = text;
+      bubble.appendChild(textParagraph);
+
+      wrapper.appendChild(bubble);
+      chatMessages.appendChild(wrapper);
+
+      const scrollArea = document.querySelector('#chat-messages').closest('[style*="overflow-y"]') || document.querySelector('#chat-messages').parentElement;
+      if (scrollArea) {
+        scrollArea.scrollTop = scrollArea.scrollHeight;
+      }
+
+      if (sender !== 'user') {
+        waveWash();
+      }
+    }
+
+    // --- JAVASCRIPT ADDITIONS ---
+
+    function createRipple() {
+      const btn = document.getElementById('mic-btn');
+      if (!btn) return;
+      const parent = btn.parentElement;
+
+      let container = document.getElementById('ripple-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'ripple-container';
+        container.style.position = 'absolute';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.pointerEvents = 'none';
+        container.style.zIndex = '5';
+        parent.appendChild(container);
+      }
+
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          if (currentMicState !== 'listening') return;
+
+          const ripple = document.createElement('div');
+          ripple.className = 'mic-ripple';
+
+          const topVal = btn.offsetTop + btn.offsetHeight / 2;
+          const leftVal = btn.offsetLeft + btn.offsetWidth / 2;
+
+          ripple.style.top = topVal + 'px';
+          ripple.style.left = leftVal + 'px';
+
+          container.appendChild(ripple);
+
+          setTimeout(() => {
+            ripple.remove();
+          }, 1500);
+        }, i * 300);
+      }
+    }
+
+    function waveWash() {
+      const chatView = document.getElementById('chat-view');
+      if (!chatView) return;
+
+      const wash = document.createElement('div');
+      wash.className = 'wave-wash';
+      chatView.appendChild(wash);
+
+      setTimeout(() => {
+        wash.remove();
+      }, 2000);
+    }
+
+    function initParticleSystem() {
+      const chatView = document.getElementById('chat-view');
+      if (!chatView) return;
+
+      const container = document.createElement('div');
+      container.id = 'particle-container';
+      container.style.position = 'absolute';
+      container.style.inset = '0';
+      container.style.overflow = 'hidden';
+      container.style.pointerEvents = 'none';
+      container.style.zIndex = '2';
+      chatView.appendChild(container);
+
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'bio-particle';
+
+        const size = (Math.random() * 2 + 1).toFixed(1);
+        const topVal = Math.random() * 100;
+        const leftVal = Math.random() * 100;
+        const duration = (Math.random() * 12 + 8).toFixed(1);
+        const delay = (Math.random() * 10).toFixed(1);
+        const opacity = (Math.random() * 0.4 + 0.3).toFixed(2);
+
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.top = topVal + '%';
+        particle.style.left = leftVal + '%';
+        particle.style.animationDuration = duration + 's';
+        particle.style.animationDelay = delay + 's';
+        particle.style.opacity = opacity;
+
+        container.appendChild(particle);
+      }
+    }
+
+    // Initialize default view states on load
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Disable mic button until engines are ready
+      const micBtn = document.getElementById('mic-btn');
+      if (micBtn) {
+        micBtn.disabled = true;
+        micBtn.style.opacity = '0.5';
+      }
+      const status = document.getElementById('mic-status');
+      if (status) {
+        status.textContent = 'Loading AI models...';
+      }
+
+      // Run brand morphing animation
+      runBrandAnimation();
+
+      // Initialize our premium visual worlds effects
+      initParticleSystem();
+
+      // On DOMContentLoaded, update welcome message
+      const profile = await window.electronAPI.getProfile()
+      if (profile && profile.name) {
+        const welcomeEl = document.getElementById('welcome-name')
+        if (welcomeEl) welcomeEl.textContent = `Welcome back, ${profile.name}`
+      }
+    });
+
+    // --- 9. KEYBOARD SHORTCUT ---
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' &&
+        document.getElementById('chat-view')
+          .classList.contains('active')) {
+        // Ignore keydown if focused on an input element
+        if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+          return;
+        }
+        e.preventDefault();
+        handleMicClick();
+      }
+    });
+
+    // --- 6. IPC BRIDGE ---
+    if (typeof window !== 'undefined') {
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.electronAPI) {
+          window.electronAPI.onTurnComplete((result) => {
+            addMessage(result.responseText, 'assistant');
+            setMicState('idle');
+          });
+          window.electronAPI.onCrisisDetected((crisisData) => {
+            showCrisisOverlay(crisisData);
+          });
+          window.electronAPI.onStatusChange((status) => {
+            setMicState(status);
+          });
+          window.electronAPI.onEnginesReady((success) => {
+            const micBtn = document.getElementById('mic-btn');
+            const beginBtn = document.getElementById('begin-btn');
+            const loadingStatus = document.getElementById('loading-status');
+            if (success) {
+              if (micBtn) {
+                micBtn.disabled = false;
+                micBtn.style.opacity = '1';
+              }
+              if (beginBtn) {
+                beginBtn.disabled = false;
+                beginBtn.style.opacity = '1';
+                beginBtn.style.pointerEvents = 'auto';
+              }
+              if (loadingStatus) {
+                loadingStatus.textContent = "Ready. Your space is prepared.";
+              }
+              setMicState('idle');
+            } else {
+              if (micBtn) {
+                micBtn.disabled = true;
+                micBtn.style.opacity = '0.5';
+              }
+              if (beginBtn) {
+                beginBtn.disabled = true;
+                beginBtn.style.opacity = '0.6';
+                beginBtn.style.pointerEvents = 'none';
+              }
+              if (loadingStatus) {
+                loadingStatus.textContent = "Loading failed. Please wait 10 seconds and restart the app.";
+              }
+              const status = document.getElementById('mic-status');
+              if (status) {
+                status.textContent = 'Loading failed. Please wait 10 seconds and restart the app.';
+              }
+            }
+          });
+        }
+      });
+    }
+
+    // --- B) Breathing animation functions ---
+    function showBreathingAnimation() {
+      hideBreathingAnimation()
+      const div = document.createElement('div')
+      div.id = 'breathing-anim'
+      div.style.cssText = `
+        width: 100%;
+        height: 80px;
+        position: relative;
+        overflow: hidden;
+        margin: 8px 0;
+        border-radius: 12px;
+      `
+      div.innerHTML = `
+        <svg viewBox="0 0 600 80" preserveAspectRatio="none"
+          style="width:100%; height:100%; position:absolute; bottom:0;">
+          <defs>
+            <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(100,220,200,0.6)"/>
+              <stop offset="100%" style="stop-color:rgba(100,220,200,0.05)"/>
+            </linearGradient>
+            <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(184,169,227,0.4)"/>
+              <stop offset="100%" style="stop-color:rgba(184,169,227,0.02)"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#waveGrad1)"
+            d="M0,50 C150,20 300,70 450,40 C525,25 570,45 600,50 L600,80 L0,80 Z">
+            <animate attributeName="d" dur="3s" repeatCount="indefinite"
+              values="
+                M0,50 C150,20 300,70 450,40 C525,25 570,45 600,50 L600,80 L0,80 Z;
+                M0,45 C150,65 300,25 450,55 C525,65 570,38 600,45 L600,80 L0,80 Z;
+                M0,50 C150,20 300,70 450,40 C525,25 570,45 600,50 L600,80 L0,80 Z
+              "/>
+          </path>
+          <path fill="url(#waveGrad2)"
+            d="M0,60 C100,40 200,65 300,55 C400,45 500,62 600,60 L600,80 L0,80 Z">
+            <animate attributeName="d" dur="2s" repeatCount="indefinite"
+              values="
+                M0,60 C100,40 200,65 300,55 C400,45 500,62 600,60 L600,80 L0,80 Z;
+                M0,55 C100,68 200,45 300,62 C400,70 500,50 600,55 L600,80 L0,80 Z;
+                M0,60 C100,40 200,65 300,55 C400,45 500,62 600,60 L600,80 L0,80 Z
+              "/>
+          </path>
+          ${Array.from({ length: 8 }, (_, i) => `
+            <circle r="2" fill="rgba(100,220,200,0.8)"
+              style="filter:drop-shadow(0 0 3px rgba(100,220,200,0.8))">
+              <animateMotion dur="${2 + i * 0.3}s" repeatCount="indefinite"
+                path="M${i * 75},50 C${i * 75 + 37},20 ${i * 75 + 75},50 ${i * 75 + 75},50"/>
+              <animate attributeName="opacity" dur="${2 + i * 0.3}s"
+                repeatCount="indefinite" values="0;1;0"/>
+            </circle>
+          `).join('')}
+        </svg>
+      `
+      document.getElementById('chat-messages').appendChild(div)
+      document.getElementById('chat-messages').scrollTop =
+        document.getElementById('chat-messages').scrollHeight
+    }
+
+    function hideBreathingAnimation() {
+      const anim = document.getElementById('breathing-anim')
+      if (anim) anim.remove()
+    }
+
+    // --- C) Mood check functions ---
+    function showMoodCheck() {
+      // Avoid duplicates
+      document.getElementById('mood-check')?.remove();
+
+      const moodDiv = document.createElement('div')
+      moodDiv.id = 'mood-check'
+      moodDiv.style.cssText = `text-align:center; padding:12px; color:rgba(184,169,227,0.7); font-size:13px; font-style:italic;`
+      moodDiv.innerHTML = `
+        <p style="margin-bottom:8px">How are you feeling now?</p>
+        <div style="display:flex; justify-content:center; gap:12px">
+          ${[1, 2, 3, 4, 5].map(n => `
+            <button onclick="submitMood(${n})" style="background:transparent; border:1px solid rgba(184,169,227,0.3); border-radius:50%; width:32px; height:32px; color:#b8a9e3; cursor:pointer; font-size:14px; transition: all 0.2s ease">
+              ${['😔', '😟', '😐', '🙂', '😊'][n - 1]}
+            </button>
+          `).join('')}
+        </div>
+      `
+      document.getElementById('chat-messages').appendChild(moodDiv)
+    }
+
+    async function submitMood(score) {
+      await window.electronAPI.saveMood(score, '')
+      document.getElementById('mood-check')?.remove()
+    }
+
+    async function sendTextMessage() {
+      const input = document.getElementById('text-input')
+      const text = input.value.trim()
+      if (!text) return
+      input.value = ''
+      addMessage(text, 'user')
+      setMicState('thinking')
+      const result = await window.electronAPI.processText(text)
+      addMessage(result.responseText, 'assistant')
+
+      if (result.isClosing) {
+        showMoodCheck()
+      }
+
+      if (result.isCrisis) {
+        const crisisData = await window.electronAPI.getCrisisData()
+        showCrisisOverlay(crisisData)
+
+        // Play crisis audio
+        if (currentAudio) {
+          currentAudio.pause()
+          currentAudio = null
+        }
+        currentAudio = new Audio('file:///C:/MindSafe/audio-samples/response.wav?t=' + Date.now())
+        currentAudio.play()
+        currentAudio.onended = () => {
+          setMicState('idle')
+          currentMicState = 'idle'
+          currentAudio = null
+        }
+        return;
+      }
+
+      if (result.responseText && !result.responseText.includes("didn't catch")) {
+        if (currentAudio) {
+          currentAudio.pause()
+          currentAudio = null
+        }
+        currentAudio = new Audio('file:///C:/MindSafe/audio-samples/response.wav?t=' + Date.now())
+        currentAudio.play()
+        currentAudio.onended = () => {
+          setMicState('idle')
+          currentMicState = 'idle'
+          currentAudio = null
+        }
+      } else {
+        setMicState('idle')
+        currentMicState = 'idle'
+      }
+    }
+
+    // --- E) Real journal sidebar with search and export ---
+    async function loadJournalEntries() {
+      const entries = await window.electronAPI.getJournal(20)
+      const container = document.getElementById('journal-entries')
+      if (!entries || entries.length === 0) {
+        container.innerHTML = `<p style="color:rgba(184,169,227,0.4); text-align:center; font-style:italic; padding:24px">Your journey begins with your first conversation. 💛</p>`
+        return
+      }
+      container.innerHTML = entries.map(e => `
+        <div class="journal-card" onclick="openJournalEntry(${JSON.stringify(e).replace(/"/g, '&quot;')})" style="background:#1a1f35; border-radius:12px; padding:12px 16px; margin-bottom:8px; border:1px solid rgba(184,169,227,0.1); cursor:pointer; transition: all 0.2s ease"
+          onmouseover="this.style.borderColor='rgba(244,162,97,0.3)'"
+          onmouseout="this.style.borderColor='rgba(184,169,227,0.1)'">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+            <span style="color:rgba(240,239,233,0.4); font-size:11px">${e.date} ${e.time}</span>
+            <span style="width:8px; height:8px; border-radius:50%; background:${e.mood >= 4 ? '#f4a261' : e.mood >= 3 ? '#b8a9e3' : '#e8a0bf'}"></span>
+          </div>
+          <p style="color:rgba(240,239,233,0.7); font-size:13px; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${e.summary}</p>
+        </div>
+      `).join('')
+    }
+
+    async function openJournalEntry(entry) {
+      // Clear current chat
+      const chatArea = document.getElementById('chat-messages')
+      if (chatArea) {
+        chatArea.innerHTML = ''
+      }
+
+      // Add a date header
+      const header = document.createElement('div')
+      header.style.cssText = 'text-align:center; color:rgba(184,169,227,0.5); font-size:12px; padding:8px; font-style:italic;'
+      header.textContent = entry.date + ' ' + entry.time
+      if (chatArea) {
+        chatArea.appendChild(header)
+      }
+
+      // Replay all messages from that session
+      if (entry.messages && entry.messages.length > 0) {
+        entry.messages.forEach(msg => {
+          if (msg.user) addMessage(msg.user, 'user')
+          if (msg.assistant) addMessage(msg.assistant, 'assistant')
+        })
+      } else {
+        // Fallback for old format entries
+        if (entry.userMessage) addMessage(entry.userMessage, 'user')
+        if (entry.aiResponse) addMessage(entry.aiResponse, 'assistant')
+      }
+
+      // Close sidebar
+      toggleSidebar()
+
+      // Show a banner indicating this is past convo
+      const banner = document.createElement('div')
+      banner.style.cssText = 'text-align:center; color:rgba(244,162,97,0.6); font-size:13px; padding:8px; font-style:italic; border-top:1px solid rgba(244,162,97,0.2); margin-top:8px;'
+      banner.textContent = '— Viewing past conversation — Start speaking to begin a new one'
+      if (chatArea) {
+        chatArea.appendChild(banner)
+        chatArea.scrollTop = chatArea.scrollHeight
+      }
+    }
+
+    async function exportJournal() {
+      await window.electronAPI.exportJournal()
+    }
+
+    const searchEl = document.getElementById('journal-search');
+    if (searchEl) {
+      searchEl.addEventListener('input', async (e) => {
+        const query = e.target.value.trim()
+        if (query.length < 2) { loadJournalEntries(); return }
+        const results = await window.electronAPI.searchJournal(query)
+        const container = document.getElementById('journal-entries')
+        if (!results || results.length === 0) {
+          container.innerHTML = `<p style="color:rgba(184,169,227,0.4); text-align:center; font-style:italic; padding:24px">No reflections match "${query}".</p>`
+          return
+        }
+        container.innerHTML = results.map(e => `
+          <div class="journal-card" onclick="openJournalEntry(${JSON.stringify(e).replace(/"/g, '&quot;')})" style="background:#1a1f35; border-radius:12px; padding:12px 16px; margin-bottom:8px; border:1px solid rgba(184,169,227,0.1); cursor:pointer; transition: all 0.2s ease"
+            onmouseover="this.style.borderColor='rgba(244,162,97,0.3)'"
+            onmouseout="this.style.borderColor='rgba(184,169,227,0.1)'">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+              <span style="color:rgba(240,239,233,0.4); font-size:11px">${e.date} ${e.time}</span>
+              <span style="width:8px; height:8px; border-radius:50%; background:${e.mood >= 4 ? '#f4a261' : e.mood >= 3 ? '#b8a9e3' : '#e8a0bf'}"></span>
+            </div>
+            <p style="color:rgba(240,239,233,0.7); font-size:13px; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${e.summary}</p>
+          </div>
+        `).join('')
+      })
+    }
+
+    // --- Medical Panel functions ---
+    function showMedicalPanel() {
+      const overlay = document.getElementById('medical-panel-overlay');
+      const card = document.getElementById('medical-panel-card');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+
+      loadMedicalPanel();
+
+      setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+      }, 10);
+    }
+
+    function hideMedicalPanel() {
+      const overlay = document.getElementById('medical-panel-overlay');
+      const card = document.getElementById('medical-panel-card');
+      overlay.classList.add('opacity-0');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+      }, 300);
+    }
+
+    async function extractMedicalRecord() {
+      const isDash = document.getElementById('dashboard-screen').style.display === 'block';
+      const container = isDash
+        ? document.getElementById('dashboard-screen')
+        : document.getElementById('medical-panel-card');
+
+      if (!container) return;
+
+      const fileUpload = container.querySelector('#med-file-upload');
+      if (!fileUpload) return;
+      const file = fileUpload.files[0]
+      if (!file) return
+
+      const statusEl = container.querySelector('#med-extract-status');
+      if (statusEl) statusEl.textContent = 'Extracting...';
+
+      const reader = new FileReader()
+      reader.onload = async (e) => {
+        const base64 = e.target.result.split(',')[1]
+
+        try {
+          const saveResult = await window.electronAPI.saveTempMedicalFile({
+            base64,
+            mimeType: file.type
+          })
+
+          if (!saveResult || !saveResult.success) {
+            if (statusEl) statusEl.textContent = 'Failed to save temporary file';
+            return
+          }
+
+          const result = await window.electronAPI.extractMedical({
+            filePath: saveResult.filePath
+          })
+
+          if (result.success) {
+            const data = result.data || result
+            const conditions = Array.isArray(data.conditions) ? data.conditions.join(', ') : (data.conditions || '');
+            const medications = Array.isArray(data.medications) ? data.medications.join(', ') : (data.medications || '');
+
+            // Write to all matching inputs to keep both sidebar and dashboard in sync
+            document.querySelectorAll('#med-conditions').forEach(el => el.value = conditions);
+            document.querySelectorAll('#med-medications').forEach(el => el.value = medications);
+            document.querySelectorAll('#med-notes').forEach(el => el.value = data.notes || '');
+
+            if (statusEl) statusEl.textContent = 'Extracted ✓ — review and save';
+          } else {
+            if (statusEl) statusEl.textContent = 'Could not extract — please fill manually';
+          }
+        } catch (err) {
+          console.error(err)
+          if (statusEl) statusEl.textContent = 'Error: ' + err.message;
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+
+    async function loadMedicalPanel() {
+      const data = await window.electronAPI.getMedical()
+      const conditions = Array.isArray(data.conditions) ? data.conditions.join(', ') : (data.conditions || '');
+      const medications = Array.isArray(data.medications) ? data.medications.join(', ') : (data.medications || '');
+
+      document.querySelectorAll('#med-conditions').forEach(el => el.value = conditions);
+      document.querySelectorAll('#med-medications').forEach(el => el.value = medications);
+      document.querySelectorAll('#med-notes').forEach(el => el.value = data.notes || '');
+
+      // Dashboard-specific medical fields
+      document.querySelectorAll('#med-allergies').forEach(el => el.value = data.allergies || '');
+      document.querySelectorAll('#med-med-notes').forEach(el => el.value = data.medMedNotes || '');
+
+      const lastUpdatedText = data.lastUpdated ? 'Last updated: ' + new Date(data.lastUpdated).toLocaleDateString('en-IN') : '';
+      document.querySelectorAll('#med-last-updated').forEach(el => el.textContent = lastUpdatedText);
+    }
+
+    async function saveMedicalRecords() {
+      const isDash = document.getElementById('dashboard-screen').style.display === 'block';
+      const container = isDash
+        ? document.getElementById('dashboard-screen')
+        : document.getElementById('medical-panel-card');
+
+      if (!container) return;
+
+      const conditionsStr = container.querySelector('#med-conditions')?.value || '';
+      const medicationsStr = container.querySelector('#med-medications')?.value || '';
+      const notes = container.querySelector('#med-notes')?.value || '';
+
+      const conditions = conditionsStr.split(',').map(s => s.trim()).filter(Boolean);
+      const medications = medicationsStr.split(',').map(s => s.trim()).filter(Boolean);
+
+      const payload = {
+        conditions,
+        medications,
+        notes
+      }
+
+      // Add dashboard fields if they exist in the container
+      const algEl = container.querySelector('#med-allergies');
+      if (algEl) payload.allergies = algEl.value;
+      const medNotesEl = container.querySelector('#med-med-notes');
+      if (medNotesEl) payload.medMedNotes = medNotesEl.value;
+
+      await window.electronAPI.saveMedical(payload)
+
+      document.querySelectorAll('#med-status').forEach(el => {
+        el.textContent = 'Saved ✓';
+        setTimeout(() => el.textContent = '', 2000);
+      });
+
+      await loadMedicalPanel();
+    }
+
+    async function clearMedicalRecords() {
+      await window.electronAPI.clearMedical()
+      document.querySelectorAll('#med-conditions').forEach(el => el.value = '');
+      document.querySelectorAll('#med-medications').forEach(el => el.value = '');
+      document.querySelectorAll('#med-notes').forEach(el => el.value = '');
+      document.querySelectorAll('#med-allergies').forEach(el => el.value = '');
+      document.querySelectorAll('#med-med-notes').forEach(el => el.value = '');
+      document.querySelectorAll('#med-last-updated').forEach(el => el.textContent = '');
+    }
+
+    // --- DASHBOARD NAVIGATION & SHELL ---
+    var activeTab = null
+
+    const TAB_DEPTHS = {
+      breathing: {
+        depth: '0m',
+        zone: 'SURFACE',
+        markerPos: 0,
+        bg: 'linear-gradient(to bottom, #061428, #0a1f3a)',
+        vignette: 0,
+        lightRays: 8,
+        lightOpacity: 0.35,
+        caustics: true,
+        particles: 20,
+        particleSize: [2, 5],
+        particleColors: ['rgba(100,220,200,VAL)', 'rgba(150,230,210,VAL)', 'rgba(200,240,220,VAL)'],
+        particleSpeed: 3,
+        bioOrbs: 0,
+        color: 'rgba(100,220,200,0.9)',
+        sonarColor: 'rgba(100,220,200,0.4)'
+      },
+      profile: {
+        depth: '50m',
+        zone: 'SHALLOW',
+        markerPos: 23,
+        bg: 'linear-gradient(to bottom, #051020, #081830)',
+        vignette: 0.1,
+        lightRays: 5,
+        lightOpacity: 0.2,
+        caustics: true,
+        particles: 15,
+        particleSize: [1, 4],
+        particleColors: ['rgba(100,200,220,VAL)', 'rgba(80,180,210,VAL)'],
+        particleSpeed: 4,
+        bioOrbs: 1,
+        color: 'rgba(100,200,220,0.9)',
+        sonarColor: 'rgba(100,200,220,0.4)'
+      },
+      journal: {
+        depth: '200m',
+        zone: 'MID WATER',
+        markerPos: 46,
+        bg: 'linear-gradient(to bottom, #040e1c, #060f20)',
+        vignette: 0.25,
+        lightRays: 2,
+        lightOpacity: 0.08,
+        caustics: false,
+        particles: 12,
+        particleSize: [1, 3],
+        particleColors: ['rgba(80,160,210,VAL)', 'rgba(100,140,200,VAL)'],
+        particleSpeed: 6,
+        bioOrbs: 2,
+        color: 'rgba(120,180,220,0.9)',
+        sonarColor: 'rgba(120,180,220,0.4)'
+      },
+      medical: {
+        depth: '1000m',
+        zone: 'DEEP',
+        markerPos: 62,
+        bg: 'linear-gradient(to bottom, #030a16, #04091a)',
+        vignette: 0.45,
+        lightRays: 0,
+        lightOpacity: 0,
+        caustics: false,
+        particles: 8,
+        particleSize: [1, 2],
+        particleColors: ['rgba(130,120,220,VAL)', 'rgba(150,140,230,VAL)'],
+        particleSpeed: 8,
+        bioOrbs: 4,
+        color: 'rgba(150,140,220,0.9)',
+        sonarColor: 'rgba(150,140,220,0.4)'
+      },
+      analysis: {
+        depth: '3000m',
+        zone: 'ABYSS',
+        markerPos: 80,
+        bg: 'linear-gradient(to bottom, #020610, #030814)',
+        vignette: 0.65,
+        lightRays: 0,
+        lightOpacity: 0,
+        caustics: false,
+        particles: 5,
+        particleSize: [1, 2],
+        particleColors: ['rgba(184,169,227,VAL)', 'rgba(160,140,220,VAL)'],
+        particleSpeed: 12,
+        bioOrbs: 6,
+        color: 'rgba(184,169,227,0.9)',
+        sonarColor: 'rgba(184,169,227,0.4)'
+      },
+      export: {
+        depth: '6000m',
+        zone: 'HADAL',
+        markerPos: 100,
+        bg: 'linear-gradient(to bottom, #010408, #02060c)',
+        vignette: 0.85,
+        lightRays: 0,
+        lightOpacity: 0,
+        caustics: false,
+        particles: 3,
+        particleSize: [1, 1.5],
+        particleColors: ['rgba(200,160,240,VAL)', 'rgba(180,140,230,VAL)'],
+        particleSpeed: 15,
+        bioOrbs: 8,
+        color: 'rgba(200,160,240,0.9)',
+        sonarColor: 'rgba(200,160,240,0.4)'
+      }
+    }
+
+    var depthParticleInterval = null
+    var depthBioInterval = null
+
+    function renderDepthCanvas(tabId) {
+      const canvas = document.getElementById('depth-canvas')
+      const vignette = document.getElementById('depth-vignette')
+      if (!canvas) return
+
+      const d = TAB_DEPTHS[tabId]
+
+      // Clear existing depth elements
+      canvas.innerHTML = ''
+      if (depthParticleInterval) { clearInterval(depthParticleInterval); depthParticleInterval = null }
+      if (depthBioInterval) { clearInterval(depthBioInterval); depthBioInterval = null }
+
+      // Background
+      canvas.style.background = d.bg
+
+      // Vignette intensity
+      if (vignette) {
+        vignette.style.background = `radial-gradient(ellipse at center,
+          transparent 20%,
+          rgba(0,0,${tabId === 'export' ? 15 : 10},${d.vignette * 0.3}) 60%,
+          rgba(0,0,${tabId === 'export' ? 15 : 10},${d.vignette}) 100%
+        )`
+      }
+
+      // Light rays (surface and shallow only)
+      if (d.lightRays > 0) {
+        for (let i = 0; i < d.lightRays; i++) {
+          const ray = document.createElement('div')
+          const left = 10 + (i / d.lightRays) * 80
+          const height = 40 + Math.random() * 30
+          const width = 30 + Math.random() * 60
+          ray.className = 'light-ray'
+          ray.style.cssText = `
+            position: absolute;
+            top: -10%;
+            left: ${left}%;
+            width: ${width}px;
+            height: ${height}vh;
+            background: linear-gradient(
+              to bottom,
+              rgba(100,220,200,${d.lightOpacity}),
+              rgba(100,220,200,${d.lightOpacity * 0.3}),
+              transparent
+            );
+            transform: skewX(${-10 + Math.random() * 20}deg);
+            transform-origin: top center;
+            animation: lightRay ${3 + Math.random() * 3}s ease-in-out ${Math.random() * 2}s infinite;
+            pointer-events: none;
+            filter: blur(${4 + Math.random() * 8}px);
+          `
+          canvas.appendChild(ray)
+        }
+      }
+
+      // Caustic light patterns (shallow water only)
+      if (d.caustics) {
+        for (let i = 0; i < 3; i++) {
+          const caustic = document.createElement('div')
+          caustic.style.cssText = `
+            position: absolute;
+            top: ${Math.random() * 40}%;
+            left: ${Math.random() * 80}%;
+            width: ${150 + Math.random() * 200}px;
+            height: ${150 + Math.random() * 200}px;
+            background: radial-gradient(ellipse,
+              rgba(100,220,200,0.06) 0%,
+              transparent 70%
+            );
+            border-radius: 40% 60% 50% 70%;
+            animation: causticPattern ${5 + Math.random() * 4}s ease-in-out ${Math.random() * 3}s infinite;
+            pointer-events: none;
+            filter: blur(8px);
+          `
+          canvas.appendChild(caustic)
+        }
+      }
+
+      // Bioluminescent orbs (deep zones)
+      if (d.bioOrbs > 0) {
+        for (let i = 0; i < d.bioOrbs; i++) {
+          const orb = document.createElement('div')
+          const size = 4 + Math.random() * 12
+          const color = d.particleColors[Math.floor(Math.random() * d.particleColors.length)]
+            .replace('VAL', (0.4 + Math.random() * 0.4).toFixed(2))
+          orb.className = 'bio-orb'
+          orb.style.cssText = `
+            position: absolute;
+            left: ${Math.random() * 90}%;
+            top: ${20 + Math.random() * 60}%;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            box-shadow: 0 0 ${size * 2}px ${color};
+            animation: bioGlow ${3 + Math.random() * 4}s ease-in-out ${Math.random() * 3}s infinite;
+            pointer-events: none;
+          `
+          canvas.appendChild(orb)
+        }
+      }
+
+      // Floating particles
+      const spawnParticle = () => {
+        if (!document.getElementById('depth-canvas')) return
+        const particle = document.createElement('div')
+        const size = d.particleSize[0] + Math.random() * (d.particleSize[1] - d.particleSize[0])
+        const color = d.particleColors[Math.floor(Math.random() * d.particleColors.length)]
+          .replace('VAL', (0.3 + Math.random() * 0.5).toFixed(2))
+        const startX = Math.random() * 100
+        const startY = Math.random() * 100
+        const driftX = (Math.random() - 0.5) * 80
+        const driftY = -(20 + Math.random() * 60)
+        const duration = d.particleSpeed + Math.random() * 4
+
+        particle.className = 'depth-particle'
+        particle.style.cssText = `
+          left: ${startX}%;
+          top: ${startY}%;
+          width: ${size}px;
+          height: ${size}px;
+          background: ${color};
+          box-shadow: 0 0 ${size * 2}px ${color};
+          --dx: ${driftX}px;
+          --dy: ${driftY}px;
+          animation: particleDrift ${duration}s ease-in-out forwards;
+        `
+        canvas.appendChild(particle)
+        setTimeout(() => { if (particle.parentNode) particle.remove() }, duration * 1000)
+      }
+
+      // Initial burst of particles
+      for (let i = 0; i < d.particles; i++) {
+        setTimeout(() => spawnParticle(), Math.random() * 2000)
+      }
+
+      // Continuous particle spawning
+      depthParticleInterval = setInterval(() => {
+        if (Math.random() < 0.7) spawnParticle()
+      }, 800)
+    }
+
+    function triggerSonarPing(tabId) {
+      const layer = document.getElementById('sonar-layer')
+      if (!layer) return
+      const d = TAB_DEPTHS[tabId]
+      const ping = document.createElement('div')
+      ping.style.cssText = `
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 1px solid ${d.sonarColor};
+        animation: sonarPing 1.2s ease-out forwards;
+        pointer-events: none;
+      `
+      layer.appendChild(ping)
+      setTimeout(() => { if (ping.parentNode) ping.remove() }, 1200)
+    }
+
+    function navigateToTab(tabId) {
+      window.activeTab = tabId
+      activeTab = tabId
+      const depth = TAB_DEPTHS[tabId]
+
+      // Update depth meter
+      const marker = document.getElementById('depth-marker')
+      const depthNum = document.getElementById('depth-number')
+      const zoneLabel = document.getElementById('depth-zone-label')
+
+      if (marker) marker.style.top = (depth.markerPos / 100 * 132) + 'px'
+      if (depthNum) {
+        depthNum.style.animation = 'none'
+        depthNum.textContent = depth.depth
+        void depthNum.offsetWidth
+        depthNum.style.animation = 'depthNumber 0.5s ease forwards'
+      }
+      if (zoneLabel) zoneLabel.textContent = depth.zone
+
+      // Sonar ping on transition
+      triggerSonarPing(tabId)
+
+      // Render cinematic depth canvas
+      renderDepthCanvas(tabId)
+
+      // Update shoreline tab active states
+      document.querySelectorAll('.shore-tab').forEach(tab => {
+        const isActive = tab.dataset.tab === tabId
+        tab.style.opacity = isActive ? '1' : '0.6'
+        tab.style.transform = isActive ? 'translateY(-4px)' : 'translateY(0)'
+        const dot = tab.querySelector('.shore-dot')
+        if (dot) {
+          dot.style.background = isActive ? depth.color : 'rgba(100,220,200,0.4)'
+          dot.style.boxShadow = isActive ? `0 0 6px ${depth.color}` : 'none'
+          dot.style.width = isActive ? '6px' : '4px'
+          dot.style.height = isActive ? '6px' : '4px'
+        }
+      })
+
+      // Render tab content with fade
+      const content = document.getElementById('tab-content')
+      if (!content) return
+      content.style.opacity = '0'
+      content.style.transform = 'translateY(20px)'
+
+      setTimeout(() => {
+        switch (tabId) {
+          case 'profile': content.innerHTML = getProfileHTML(); initProfile(); break
+          case 'journal': content.innerHTML = getJournalHTML(); initJournal(); break
+          case 'medical': content.innerHTML = getMedicalHTML(); initMedical(); break
+          case 'analysis': content.innerHTML = getAnalysisHTML(); initAnalysis(); break
+          case 'breathing': content.innerHTML = getBreathingHTML(); initBreathing(); break
+          case 'export': content.innerHTML = getExportHTML(); initExport(); break
+        }
+        content.style.transition = 'all 0.4s ease'
+        content.style.opacity = '1'
+        content.style.transform = 'translateY(0)'
+      }, 300)
+    }
+
+    function openDashboard(tab = 'journal') {
+      console.log('openDashboard called with tab:', tab)
+      console.log('dashboard-screen element:', document.getElementById('dashboard-screen'))
+
+      const welcomeView = document.getElementById('welcome-view')
+      if (welcomeView) {
+        welcomeView.style.display = 'none'
+        welcomeView.classList.remove('active')
+      }
+
+      document.getElementById('chat-screen').style.display = 'none'
+      document.getElementById('dashboard-screen').style.display = 'block'
+      setTimeout(() => navigateToTab(tab), 100)
+    }
+
+    function closeDashboard() {
+      if (depthParticleInterval) { clearInterval(depthParticleInterval); depthParticleInterval = null }
+      if (depthBioInterval) { clearInterval(depthBioInterval); depthBioInterval = null }
+      document.getElementById('dashboard-screen').style.display = 'none'
+      document.getElementById('chat-screen').style.display = 'block'
+
+      // Bypass welcome-view and ensure chat-view is active
+      const welcomeView = document.getElementById('welcome-view')
+      if (welcomeView) {
+        welcomeView.style.display = 'none'
+        welcomeView.classList.remove('active')
+      }
+      const chatView = document.getElementById('chat-view')
+      if (chatView) {
+        chatView.style.display = 'flex'
+        chatView.classList.add('active')
+      }
+    }
+
+    window.navigateToTab = navigateToTab
+    window.openDashboard = openDashboard
+    window.closeDashboard = closeDashboard
+    window.renderDepthCanvas = renderDepthCanvas
+
+    function startSession() {
+      // Update welcome name
+      closeDashboard()
+      setMicState('idle')
+    }
+
+    function startNewConversation() {
+      document.getElementById('chat-messages').innerHTML = ''
+      window.electronAPI.startNewSession()
+      closeDashboard()
+      setMicState('idle')
+    }
+
+    async function beginJourney() {
+      // Hide intro/welcome screen
+      const introEl = document.getElementById('intro-screen')
+        || document.getElementById('welcome-screen')
+        || document.getElementById('intro')
+        || document.getElementById('welcome-view')
+      if (introEl) introEl.style.display = 'none'
+
+      // Show dashboard
+      const profile = await window.electronAPI.getProfile()
+      const isFirstTime = !profile || !profile.name
+      if (isFirstTime) {
+        openDashboard('profile')
+      } else {
+        openDashboard('journal')
+      }
+    }
+    window.beginJourney = beginJourney;
+
+    // End session flow
+    function confirmEndSession() {
+      const dialog = document.createElement('div')
+      dialog.id = 'end-session-dialog'
+      dialog.style.cssText = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(5,10,30,0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9000;
+        backdrop-filter: blur(4px);
+      `
+      dialog.innerHTML = `
+        <div style="
+          background: linear-gradient(135deg, #0d1225, #1a1f35);
+          border: 1px solid rgba(100,220,200,0.2);
+          border-radius: 20px;
+          padding: 32px;
+          text-align: center;
+          max-width: 320px;
+          box-shadow: 0 0 40px rgba(100,220,200,0.1);
+        ">
+          <p style="color:rgba(240,239,233,0.9); font-family:'Nunito Sans',sans-serif; font-size:16px; margin-bottom:8px;">End this session?</p>
+          <p style="color:rgba(184,169,227,0.6); font-family:'Nunito Sans',sans-serif; font-size:13px; font-style:italic; margin-bottom:24px;">Your conversation will be saved to your journal.</p>
+          <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="endSessionConfirmed()" style="
+              background:rgba(100,220,200,0.15);
+              border:1px solid rgba(100,220,200,0.4);
+              border-radius:12px; padding:10px 24px;
+              color:rgba(100,220,200,0.9);
+              font-family:'Nunito Sans',sans-serif;
+              font-size:14px; cursor:pointer;">Yes, end session</button>
+            <button onclick="document.getElementById('end-session-dialog').remove()" style="
+              background:transparent;
+              border:1px solid rgba(240,239,233,0.15);
+              border-radius:12px; padding:10px 24px;
+              color:rgba(240,239,233,0.5);
+              font-family:'Nunito Sans',sans-serif;
+              font-size:14px; cursor:pointer;">Stay</button>
+          </div>
+        </div>
+      `
+      document.body.appendChild(dialog)
+    }
+
+    async function endSessionConfirmed() {
+      document.getElementById('end-session-dialog')?.remove()
+      await window.electronAPI.endSession()
+      showMoodCheck()
+      openDashboard('analysis')
+    }
+
+    function getProfileHTML() {
+      return `
+    <div style="${DASH_STYLES.section}">
+      <p style="${DASH_STYLES.heading}">Your Profile</p>
+      <p style="${DASH_STYLES.subheading}">Stored privately on your device</p>
+
+      <div style="${DASH_STYLES.card}">
+        <label style="${DASH_STYLES.label}">PREFERRED NAME</label>
+        <input id="prof-name" style="${DASH_STYLES.input}" placeholder="What should MindSafe call you?">
+
+        <label style="${DASH_STYLES.label}; margin-top:16px;">AGE</label>
+        <input id="prof-age" type="number" style="${DASH_STYLES.input}" placeholder="Your age">
+
+        <label style="${DASH_STYLES.label}; margin-top:16px;">LOCATION (for crisis helpline)</label>
+        <select id="prof-region" style="${DASH_STYLES.input}">
+          <option value="IN">India</option>
+          <option value="US">United States</option>
+          <option value="UK">United Kingdom</option>
+          <option value="AU">Australia</option>
+          <option value="DEFAULT">Other</option>
+        </select>
+
+        <label style="${DASH_STYLES.label}; margin-top:16px;">THERAPY GOALS</label>
+        <textarea id="prof-goals" rows="3" style="${DASH_STYLES.input}" placeholder="e.g. manage anxiety, sleep better, process grief..."></textarea>
+
+        <label style="${DASH_STYLES.label}; margin-top:16px;">EMERGENCY CONTACT NAME</label>
+        <input id="prof-emergency-name" style="${DASH_STYLES.input}" placeholder="Name">
+
+        <label style="${DASH_STYLES.label}; margin-top:8px;">EMERGENCY CONTACT PHONE</label>
+        <input id="prof-emergency-phone" style="${DASH_STYLES.input}" placeholder="Phone number">
+
+        <label style="${DASH_STYLES.label}; margin-top:16px;">LANGUAGE</label>
+        <select id="prof-language" style="${DASH_STYLES.input}">
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="es">Spanish</option>
+          <option value="pt">Portuguese</option>
+          <option value="ar">Arabic</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="ru">Russian</option>
+        </select>
+
+        <div style="display:flex; gap:12px; margin-top:20px; align-items:center;">
+          <button onclick="saveProfile()" style="${DASH_STYLES.btn}">Save Profile</button>
+          <span id="prof-status" style="color:rgba(100,220,200,0.6); font-size:13px;"></span>
+        </div>
+      </div>
+    </div>
+  `
+    }
+
+    async function initProfile() {
+      const data = await window.electronAPI.getProfile()
+      if (!data) return
+      document.getElementById('prof-name').value = data.name || ''
+      document.getElementById('prof-age').value = data.age || ''
+      document.getElementById('prof-region').value = data.region || 'IN'
+      document.getElementById('prof-goals').value = data.goals || ''
+      document.getElementById('prof-emergency-name').value = data.emergencyName || ''
+      document.getElementById('prof-emergency-phone').value = data.emergencyPhone || ''
+      document.getElementById('prof-language').value = data.language || 'en'
+    }
+
+    async function saveProfile() {
+      const data = {
+        name: document.getElementById('prof-name').value,
+        age: document.getElementById('prof-age').value,
+        region: document.getElementById('prof-region').value,
+        goals: document.getElementById('prof-goals').value,
+        emergencyName: document.getElementById('prof-emergency-name').value,
+        emergencyPhone: document.getElementById('prof-emergency-phone').value,
+        language: document.getElementById('prof-language').value,
+        updatedAt: new Date().toISOString()
+      }
+      await window.electronAPI.saveProfile(data)
+      await window.electronAPI.setLanguage(data.language)
+      await window.electronAPI.setRegion(data.region)
+      document.getElementById('prof-status').textContent = 'Saved ✓'
+      setTimeout(() => {
+        const el = document.getElementById('prof-status')
+        if (el) el.textContent = ''
+      }, 2000)
+    }
+
+    window.saveProfile = saveProfile
+
+    function getJournalHTML() {
+      return `
+    <div style="${DASH_STYLES.section}">
+      <p style="${DASH_STYLES.heading}">Your Journal</p>
+      <p style="${DASH_STYLES.subheading}">Every conversation, privately yours</p>
+
+      <div style="display:flex; gap:12px; margin-bottom:16px; align-items:center;">
+        <input id="journal-search-dash" placeholder="Search conversations..."
+          style="${DASH_STYLES.input}; flex:1;"
+          oninput="searchJournalDash(this.value)">
+        <button onclick="exportJournalDash()" style="${DASH_STYLES.btnAccent}">Export ↓</button>
+      </div>
+
+      <div id="journal-list" style="display:flex; flex-direction:column; gap:10px;">
+        <p style="color:rgba(184,169,227,0.4); text-align:center; font-style:italic; padding:24px;">Loading conversations...</p>
+      </div>
+    </div>
+  `
+    }
+
+    async function initJournal() {
+      await renderJournalList()
+    }
+
+    async function renderJournalList(entries = null) {
+      const list = document.getElementById('journal-list')
+      if (!list) return
+      const data = entries || await window.electronAPI.getJournal(50)
+      if (!data || data.length === 0) {
+        list.innerHTML = `<p style="color:rgba(184,169,227,0.4); text-align:center; font-style:italic; padding:24px;">Your journey begins with your first conversation 💛</p>`
+        return
+      }
+      list.innerHTML = data.map(e => `
+    <div data-entry-id="${e.id}" style="${DASH_STYLES.card} transition:all 0.2s ease;"
+      onmouseover="this.style.borderColor='rgba(100,220,200,0.3)'"
+      onmouseout="this.style.borderColor='rgba(100,220,200,0.1)'">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div onclick="openJournalEntryDash('${e.id}')" style="flex:1; cursor:pointer;">
+          <p class="entry-summary" style="color:rgba(240,239,233,0.8); font-size:14px; margin:0 0 4px;">
+            ${e.summary || 'Conversation'}
+          </p>
+          <p style="color:rgba(184,169,227,0.4); font-size:11px; margin:0;">
+            ${e.date} · ${e.time}
+            ${e.mood ? '· ' + ['😔', '😟', '😐', '🙂', '😊'][e.mood - 1] : ''}
+            ${e.starred ? '· ⭐' : ''}
+          </p>
+          ${e.tags && e.tags.length ? `
+            <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+              ${e.tags.map(tag => `
+                <span style="background:rgba(184,169,227,0.1); border:1px solid rgba(184,169,227,0.2); border-radius:20px; padding:2px 10px; font-size:11px; color:rgba(184,169,227,0.7);">${tag}</span>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; margin-left:12px;">
+          <button onclick="toggleStarEntry('${e.id}')" title="${e.starred ? 'Unstar' : 'Star'}" style="background:transparent; border:none; cursor:pointer; font-size:16px; opacity:0.6;">${e.starred ? '⭐' : '☆'}</button>
+          <button onclick="renameEntry('${e.id}', '${(e.summary || '').replace(/'/g, "\\'")}')"
+            title="Rename" style="background:transparent; border:none; cursor:pointer; font-size:14px; color:rgba(184,169,227,0.5);">✎</button>
+          <button onclick="deleteEntry('${e.id}')" title="Delete" style="background:transparent; border:none; cursor:pointer; font-size:14px; color:rgba(232,100,100,0.5);">✕</button>
+        </div>
+      </div>
+    </div>
+  `).join('')
+    }
+
+    async function searchJournalDash(query) {
+      if (query.length < 2) { await renderJournalList(); return }
+      const results = await window.electronAPI.searchJournal(query)
+      await renderJournalList(results)
+    }
+
+    async function openJournalEntryDash(id) {
+      const entries = await window.electronAPI.getJournal(100)
+      const entry = entries.find(e => e.id === id)
+      if (!entry) return
+      closeDashboard()
+      const chatArea = document.getElementById('chat-messages')
+      chatArea.innerHTML = ''
+      const header = document.createElement('div')
+      header.style.cssText = 'text-align:center; color:rgba(184,169,227,0.5); font-size:12px; padding:8px; font-style:italic;'
+      header.textContent = entry.date + ' · ' + entry.time
+      chatArea.appendChild(header)
+      if (entry.messages && entry.messages.length > 0) {
+        entry.messages.forEach(msg => {
+          if (msg.user) addMessage(msg.user, 'user')
+          if (msg.assistant) addMessage(msg.assistant, 'assistant')
+        })
+      } else {
+        if (entry.userMessage) addMessage(entry.userMessage, 'user')
+        if (entry.aiResponse) addMessage(entry.aiResponse, 'assistant')
+      }
+      const banner = document.createElement('div')
+      banner.style.cssText = 'text-align:center; color:rgba(244,162,97,0.5); font-size:12px; padding:8px; font-style:italic; border-top:1px solid rgba(244,162,97,0.1); margin-top:8px;'
+      banner.textContent = '— Past conversation — Speak or type to begin a new one'
+      chatArea.appendChild(banner)
+      chatArea.scrollTop = chatArea.scrollHeight
+    }
+
+    async function toggleStarEntry(id) {
+      const entries = await window.electronAPI.getJournal(100)
+      const entry = entries.find(e => e.id === id)
+      if (!entry) return
+      await window.electronAPI.updateJournalEntry(id, { starred: !entry.starred })
+      await renderJournalList()
+    }
+
+    async function renameEntry(id, currentName) {
+      const card = document.querySelector(`[data-entry-id="${id}"]`)
+      if (!card) return
+      const summaryEl = card.querySelector('.entry-summary')
+      if (!summaryEl) return
+
+      const input = document.createElement('input')
+      input.value = currentName
+      input.style.cssText = `
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(100,220,200,0.4);
+    border-radius: 8px;
+    padding: 4px 10px;
+    color: #f0efe9;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+  `
+      summaryEl.replaceWith(input)
+      input.focus()
+      input.select()
+
+      const save = async () => {
+        const newName = input.value.trim()
+        if (newName && newName !== currentName) {
+          await window.electronAPI.updateJournalEntry(id, { summary: newName })
+        }
+        await renderJournalList()
+      }
+
+      input.addEventListener('blur', save)
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); save() }
+        if (e.key === 'Escape') renderJournalList()
+      })
+    }
+
+    async function deleteEntry(id) {
+      if (!confirm('Delete this conversation? This cannot be undone.')) return
+      await window.electronAPI.deleteJournalEntry(id)
+      await renderJournalList()
+    }
+
+    async function exportJournalDash() {
+      await window.electronAPI.exportJournal()
+    }
+
+    window.searchJournalDash = searchJournalDash
+    window.openJournalEntryDash = openJournalEntryDash
+    window.toggleStarEntry = toggleStarEntry
+    window.renameEntry = renameEntry
+    window.deleteEntry = deleteEntry
+    window.exportJournalDash = exportJournalDash
+
+    function getMedicalHTML() {
+      return `
+        <div style="${DASH_STYLES.section}">
+          <p style="${DASH_STYLES.heading}">Medical Profile</p>
+          <p style="${DASH_STYLES.subheading}">Read locally by OCR · Never leaves your device</p>
+
+          <div style="${DASH_STYLES.card}">
+            <p style="color:rgba(100,220,200,0.7); font-size:13px; margin-bottom:12px;">Upload Medical Record</p>
+            <p style="color:rgba(184,169,227,0.5); font-size:12px; font-style:italic; margin-bottom:12px;">PDF, text, or image file — extracted locally on your device</p>
+            <input type="file" id="med-file-upload" accept=".pdf,.txt,.jpg,.jpeg,.png,.webp,.bmp"
+              style="color:rgba(240,239,233,0.6); font-size:13px; margin-bottom:12px;">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <button onclick="extractMedicalRecord()" style="${DASH_STYLES.btn}">Extract ↑</button>
+              <span id="med-extract-status" style="color:rgba(184,169,227,0.5); font-size:12px; font-style:italic;"></span>
+            </div>
+          </div>
+
+          <div style="${DASH_STYLES.card}">
+            <p style="color:rgba(100,220,200,0.7); font-size:13px; margin-bottom:12px;">Or fill in manually</p>
+
+            <label style="${DASH_STYLES.label}">CONDITIONS</label>
+            <input id="med-conditions" style="${DASH_STYLES.input}" placeholder="e.g. anxiety, depression">
+
+            <label style="${DASH_STYLES.label}; margin-top:12px;">MEDICATIONS</label>
+            <input id="med-medications" style="${DASH_STYLES.input}" placeholder="e.g. sertraline 50mg">
+
+            <label style="${DASH_STYLES.label}; margin-top:12px;">ALLERGIES</label>
+            <input id="med-allergies" style="${DASH_STYLES.input}" placeholder="e.g. penicillin">
+
+            <label style="${DASH_STYLES.label}; margin-top:12px;">MEDICATION NOTES</label>
+            <input id="med-med-notes" style="${DASH_STYLES.input}" placeholder="e.g. take sertraline in morning">
+
+            <label style="${DASH_STYLES.label}; margin-top:12px;">OTHER NOTES</label>
+            <textarea id="med-notes" rows="3" style="${DASH_STYLES.input}" placeholder="Anything else MindSafe should know..."></textarea>
+
+            <div style="display:flex; gap:12px; margin-top:16px; align-items:center;">
+              <button onclick="saveMedicalRecords()" style="${DASH_STYLES.btn}">Save Profile</button>
+              <button onclick="clearMedicalRecords()" style="background:transparent; border:1px solid rgba(240,239,233,0.1); border-radius:10px; padding:8px 20px; color:rgba(240,239,233,0.3); font-family:'Nunito Sans',sans-serif; font-size:13px; cursor:pointer;">Clear</button>
+              <span id="med-status" style="color:rgba(100,220,200,0.6); font-size:13px;"></span>
+            </div>
+            <p id="med-last-updated" style="color:rgba(184,169,227,0.3); font-size:11px; margin-top:8px; font-style:italic;"></p>
+          </div>
+        </div>
+      `
+    }
+
+    async function initMedical() {
+      await loadMedicalPanel()
+    }
+
+    function getAnalysisHTML() {
+      return `
+        <div style="${DASH_STYLES.section}">
+          <p style="${DASH_STYLES.heading}">Your Progress</p>
+          <p style="${DASH_STYLES.subheading}">Private insights generated locally on your device</p>
+
+          <div style="${DASH_STYLES.card}">
+            <p style="color:rgba(100,220,200,0.7); font-size:14px; margin-bottom:12px;">Mood Calendar</p>
+            <div id="mood-calendar-container" style="display:flex; flex-direction:column; gap:4px; font-family:'Nunito Sans',sans-serif; overflow-x:auto; padding-bottom:8px;">
+              <!-- Month labels row -->
+              <div id="calendar-months" style="position:relative; height:16px; font-size:10px; color:rgba(184,169,227,0.4); margin-left:24px; flex-shrink:0;"></div>
+              
+              <div style="display:flex; gap:6px;">
+                <!-- Day of week labels -->
+                <div style="display:flex; flex-direction:column; justify-content:space-between; font-size:9px; color:rgba(184,169,227,0.3); width:18px; padding-top:2px; padding-bottom:2px; text-align:right;">
+                  <span>Mon</span>
+                  <span>Wed</span>
+                  <span>Fri</span>
+                  <span>Sun</span>
+                </div>
+                <!-- Grid cells rendered as flex week-columns by JS -->
+                <div id="mood-calendar" style="display:flex; gap:3px; align-items:flex-start;"></div>
+              </div>
+            </div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-left:24px;">
+              <div style="display:flex; gap:4px; align-items:center;">
+                <span style="color:rgba(184,169,227,0.4); font-size:10px;">Less</span>
+                <span style="width:10px; height:10px; border-radius:2px; background:rgba(255,255,255,0.05);"></span>
+                <span style="width:10px; height:10px; border-radius:2px; background:rgba(100,220,200,0.3); box-shadow:0 0 4px rgba(100,220,200,0.3);"></span>
+                <span style="width:10px; height:10px; border-radius:2px; background:rgba(100,220,200,0.6); box-shadow:0 0 4px rgba(100,220,200,0.6);"></span>
+                <span style="width:10px; height:10px; border-radius:2px; background:rgba(100,220,200,0.9); box-shadow:0 0 4px rgba(100,220,200,0.9);"></span>
+                <span style="color:rgba(184,169,227,0.4); font-size:10px;">More</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px;">
+            <div style="${DASH_STYLES.card} text-align:center;">
+              <p id="stat-sessions" style="color:rgba(100,220,200,0.9); font-size:28px; font-weight:600; margin:0;">-</p>
+              <p style="color:rgba(184,169,227,0.5); font-size:11px; margin:4px 0 0; letter-spacing:0.1em;">SESSIONS</p>
+            </div>
+            <div style="${DASH_STYLES.card} text-align:center;">
+              <p id="stat-avg-mood" style="color:rgba(184,169,227,0.9); font-size:28px; font-weight:600; margin:0;">-</p>
+              <p style="color:rgba(184,169,227,0.5); font-size:11px; margin:4px 0 0; letter-spacing:0.1em;">AVG MOOD</p>
+            </div>
+            <div style="${DASH_STYLES.card} text-align:center;">
+              <p id="stat-streak" style="color:rgba(244,162,97,0.9); font-size:28px; font-weight:600; margin:0;">-</p>
+              <p style="color:rgba(184,169,227,0.5); font-size:11px; margin:4px 0 0; letter-spacing:0.1em;">DAY STREAK 🔥</p>
+            </div>
+          </div>
+
+          <div style="${DASH_STYLES.card}">
+            <p style="color:rgba(100,220,200,0.7); font-size:14px; margin-bottom:16px;">Mood Trend (last 14 days)</p>
+            <div id="mood-trend-chart" style="height:80px; display:flex; align-items:flex-end; gap:6px; padding:0 4px;"></div>
+          </div>
+
+          <div style="${DASH_STYLES.card}">
+            <p style="color:rgba(100,220,200,0.7); font-size:14px; margin-bottom:8px;">Session Insights</p>
+            <p style="color:rgba(184,169,227,0.5); font-size:12px; font-style:italic; margin-bottom:16px;">Generated locally after each session</p>
+            <div id="analysis-insights" style="color:rgba(240,239,233,0.7); font-size:14px; line-height:1.7;">Loading insights...</div>
+            <button onclick="generateInsights()" style="${DASH_STYLES.btn}; margin-top:16px;">Refresh Insights</button>
+          </div>
+
+          <div style="${DASH_STYLES.card}; background:rgba(184,169,227,0.05); border-color:rgba(184,169,227,0.2);">
+            <p style="color:rgba(184,169,227,0.7); font-size:13px; font-style:italic; text-align:center; line-height:1.8;" id="analysis-affirmation">
+              Loading your affirmation...
+            </p>
+          </div>
+        </div>
+      `
+    }
+
+    function getMoodColor(score) {
+      const colors = {
+        1: 'rgba(232,100,100,0.6)',
+        2: 'rgba(232,160,100,0.6)',
+        3: 'rgba(184,169,227,0.6)',
+        4: 'rgba(100,180,220,0.7)',
+        5: 'rgba(100,220,200,0.8)'
+      }
+      return colors[score] || 'rgba(255,255,255,0.1)'
+    }
+
+    // Returns YYYY-MM-DD in LOCAL time from a Date object or Unix ms timestamp
+    function toISODay(d) {
+      const dt = (d instanceof Date) ? d : new Date(d)
+      const y = dt.getFullYear()
+      const m = String(dt.getMonth() + 1).padStart(2, '0')
+      const day = String(dt.getDate()).padStart(2, '0')
+      return `${y}-${m}-${day}`
+    }
+
+    function calculateStreakFromJournal(journal) {
+      if (!journal || !journal.length) return 0
+      // Build a Set of ISO dates (YYYY-MM-DD) from each entry's timestamp
+      const sessionDates = new Set(
+        journal
+          .filter(e => e.timestamp)
+          .map(e => toISODay(e.timestamp))
+      )
+      let streak = 0
+      for (let i = 0; i < 365; i++) {
+        const d = new Date()
+        d.setDate(d.getDate() - i)
+        if (sessionDates.has(toISODay(d))) streak++
+        else if (i > 0) break
+      }
+      return streak
+    }
+
+    async function initAnalysis() {
+      try {
+        console.log('initAnalysis starting...')
+        const mood = await window.electronAPI.getMoodHistory()
+        console.log('mood data:', mood)
+        const journal = await window.electronAPI.getJournal(100)
+        console.log('journal data:', journal?.length, 'entries')
+
+        document.getElementById('stat-sessions').textContent = journal.length
+        const avg = (mood && mood.length)
+          ? (mood.reduce((s, m) => s + m.score, 0) / mood.length).toFixed(1)
+          : '-'
+        document.getElementById('stat-avg-mood').textContent = avg
+
+        const streak = calculateStreakFromJournal(journal)
+        document.getElementById('stat-streak').textContent = streak
+
+        // GitHub/LeetCode style Contribution Grid for Sessions (last 6 months = 26 weeks)
+        const cal = document.getElementById('mood-calendar')
+        const calMonths = document.getElementById('calendar-months')
+        console.log('cal element:', cal, 'calMonths element:', calMonths)
+        if (cal && calMonths) {
+          cal.innerHTML = ''
+          calMonths.innerHTML = ''
+
+          // Generate 182 days (26 weeks) ending on the current weekday
+          const now = new Date()
+          now.setHours(0, 0, 0, 0)
+          const day = now.getDay()
+          const currentDayIndex = day === 0 ? 6 : day - 1 // Mon=0, ..., Sun=6
+
+          const startMonday = new Date(now)
+          startMonday.setDate(now.getDate() - currentDayIndex - (25 * 7)) // Monday of 25 weeks ago
+
+          const datesArray = []
+          for (let i = 0; i < 182; i++) {
+            const d = new Date(startMonday)
+            d.setDate(startMonday.getDate() + i)
+            datesArray.push(d)
+          }
+
+          // Build week columns — each column is a flex div with 7 cells
+          const CELL = 10, GAP = 3, COL_W = CELL + GAP // 13px per column
+
+          // Build month labels using absolute pixel positions
+          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+          let lastMonth = -1
+          for (let c = 0; c < 26; c++) {
+            const dateOfMonday = datesArray[c * 7]
+            const m = dateOfMonday.getMonth()
+            if (m !== lastMonth) {
+              const label = document.createElement('span')
+              label.style.cssText = `position:absolute; left:${c * COL_W}px; white-space:nowrap;`
+              label.textContent = monthNames[m]
+              calMonths.appendChild(label)
+              lastMonth = m
+            }
+          }
+
+          // Map journal session count per day using ISO date keys derived from timestamp
+          const sessionsByDate = {}
+          journal.forEach(e => {
+            const key = e.timestamp ? toISODay(e.timestamp) : null
+            if (key) {
+              sessionsByDate[key] = (sessionsByDate[key] || 0) + 1
+            }
+          })
+          console.log('sessionsByDate keys:', Object.keys(sessionsByDate).length, Object.keys(sessionsByDate).slice(0, 5))
+
+          // Render: one flex column per week
+          for (let w = 0; w < 26; w++) {
+            const weekCol = document.createElement('div')
+            weekCol.style.cssText = `display:flex; flex-direction:column; gap:${GAP}px; flex-shrink:0;`
+            for (let d = 0; d < 7; d++) {
+              const date = datesArray[w * 7 + d]
+              const cell = document.createElement('div')
+              cell.style.cssText = `width:${CELL}px; height:${CELL}px; border-radius:2px; flex-shrink:0;`
+              if (!date || date > now) {
+                cell.style.background = 'transparent'
+                cell.style.pointerEvents = 'none'
+              } else {
+                const key = toISODay(date)
+                const count = sessionsByDate[key] || 0
+                let bg = 'rgba(255,255,255,0.06)'
+                let glow = 'none'
+                if (count === 1) { bg = 'rgba(100,220,200,0.3)'; glow = '0 0 4px rgba(100,220,200,0.3)' }
+                else if (count === 2) { bg = 'rgba(100,220,200,0.6)'; glow = '0 0 4px rgba(100,220,200,0.6)' }
+                else if (count >= 3) { bg = 'rgba(100,220,200,0.9)'; glow = '0 0 6px rgba(100,220,200,0.8)' }
+                cell.style.background = bg
+                cell.style.boxShadow = glow
+                cell.style.cursor = 'pointer'
+                const dayNum = date.getDate()
+                const yearNum = date.getFullYear()
+                cell.title = `${count} session${count === 1 ? '' : 's'} on ${dayNum} ${monthNames[date.getMonth()]} ${yearNum}`
+              }
+              weekCol.appendChild(cell)
+            }
+            cal.appendChild(weekCol)
+          }
+          console.log('calendar rendered: 26 week columns')
+
+          // If no session data, show hint below month labels (not inside grid)
+          if (Object.keys(sessionsByDate).length === 0) {
+            const hint = document.createElement('p')
+            hint.style.cssText = `color:rgba(184,169,227,0.35); font-size:11px; font-style:italic; margin:6px 0 0 24px;`
+            hint.textContent = 'Complete sessions to fill your calendar.'
+            calMonths.parentElement.appendChild(hint)
+          }
+        } else {
+          console.warn('calendar elements not found — mood-calendar:', cal, 'calendar-months:', calMonths)
+        }
+
+        // Mood trend chart
+        const chart = document.getElementById('mood-trend-chart')
+        console.log('mood-trend-chart element:', chart)
+        if (chart) {
+          chart.innerHTML = ''
+          const last14 = (mood && mood.length) ? mood.slice(-14) : []
+          if (last14.length > 0) {
+            last14.forEach(m => {
+              const bar = document.createElement('div')
+              bar.style.cssText = `flex:1; height:${m.score * 16}px; background:${getMoodColor(m.score)}; border-radius:4px 4px 0 0; transition:height 0.3s ease;`
+              bar.title = `${m.date}: ${m.score}/5`
+              chart.appendChild(bar)
+            })
+          } else {
+            chart.innerHTML = `<p style="color:rgba(184,169,227,0.3); font-size:12px; font-style:italic;">No mood ratings yet — rate your mood after each session to see your trend here.</p>`
+          }
+        }
+
+        await generateInsights()
+        console.log('initAnalysis complete')
+      } catch (err) {
+        console.error('initAnalysis error:', err)
+      }
+    }
+
+    async function generateInsights() {
+      const insightsEl = document.getElementById('analysis-insights')
+      const affirmEl = document.getElementById('analysis-affirmation')
+      if (!insightsEl) return
+
+      try {
+        const journal = await window.electronAPI.getJournal(10)
+        const mood = await window.electronAPI.getMoodHistory()
+        const moodArr = mood || []
+
+        if (!journal.length) {
+          insightsEl.textContent = 'Complete your first session to see insights.'
+          if (affirmEl) affirmEl.textContent = '"Every journey begins with a single step. Yours starts here." 💛'
+          return
+        }
+
+        insightsEl.innerHTML = '<span style="color:rgba(184,169,227,0.4); font-style:italic;">Loading insights...</span>'
+
+        const result = await window.electronAPI.generateAnalysis({
+          sessionCount: journal.length,
+          recentSummaries: journal.slice(0, 5).map(e => e.summary),
+          avgMood: moodArr.length ? (moodArr.reduce((s, m) => s + m.score, 0) / moodArr.length).toFixed(1) : null,
+          recentMoods: moodArr.slice(-7).map(m => m.score),
+          streak: calculateStreakFromJournal(journal)
+        })
+
+        if (result && result.insights) insightsEl.textContent = result.insights
+        if (result && result.affirmation && affirmEl) affirmEl.textContent = `"${result.affirmation}"`
+      } catch (err) {
+        console.error('generateInsights error:', err)
+        insightsEl.textContent = 'Keep showing up — every session is a step forward.'
+        if (affirmEl) affirmEl.textContent = '"You are doing better than you know."'
+      }
+    }
+
+    window.generateInsights = generateInsights
+    window.getMoodColor = getMoodColor
+
+
+    function getBreathingHTML() {
+      return `
+        <div style="${DASH_STYLES.section}">
+          <p style="${DASH_STYLES.heading}">Breathing Room</p>
+          <p style="${DASH_STYLES.subheading}">A quiet space — no AI, just calm</p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px;">
+            <button onclick="startBreathingExercise('box')" style="${DASH_STYLES.btn}">Box Breathing</button>
+            <button onclick="startBreathingExercise('478')" style="${DASH_STYLES.btn}">4-7-8 Breath</button>
+            <button onclick="startBreathingExercise('grounding')" style="${DASH_STYLES.btn}">5-4-3-2-1 Grounding</button>
+            <button onclick="startBreathingExercise('pmr')" style="${DASH_STYLES.btn}">Muscle Relaxation</button>
+            <button onclick="startBreathingExercise('gratitude')" style="${DASH_STYLES.btn}">Gratitude Prompt</button>
+            <button onclick="startBreathingExercise('reset')" style="${DASH_STYLES.btn}">Mood Reset</button>
+            <button onclick="startBreathingExercise('timer')" style="${DASH_STYLES.btn}">Ocean Timer</button>
+          </div>
+
+          <div id="breathing-exercise-area" style="${DASH_STYLES.card} min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <p style="color:rgba(184,169,227,0.4); font-style:italic; font-size:14px;">Choose an exercise above to begin</p>
+          </div>
+        </div>
+      `
+    }
+
+    function initBreathing() { }
+
+    var breathingInterval = null
+    var breathingAudio = null
+
+    // Speak a phrase via TTS then play the response wav
+    function speakBreath(phrase) {
+      if (!window.electronAPI || !window.electronAPI.speakText) return
+      window.electronAPI.speakText(phrase).then(() => {
+        if (breathingAudio) { breathingAudio.pause(); breathingAudio = null }
+        breathingAudio = new Audio('file:///C:/MindSafe/audio-samples/response.wav?t=' + Date.now())
+        breathingAudio.play().catch(() => { })
+      }).catch(() => { })
+    }
+
+    function cancelBreathing() {
+      if (breathingInterval) { clearInterval(breathingInterval); breathingInterval = null }
+      if (breathingAudio) { breathingAudio.pause(); breathingAudio = null }
+      const area = document.getElementById('breathing-exercise-area')
+      if (area) area.innerHTML = `<p style="color:rgba(184,169,227,0.4); font-style:italic; font-size:14px;">Choose an exercise above to begin</p>`
+    }
+    window.cancelBreathing = cancelBreathing
+
+    function startBreathingExercise(type) {
+      const area = document.getElementById('breathing-exercise-area')
+      if (!area) return
+      if (breathingInterval) { clearInterval(breathingInterval); breathingInterval = null }
+
+      if (type === 'grounding') {
+        const steps = [
+          { n: 5, sense: 'things you can SEE', color: 'rgba(100,220,200,0.8)' },
+          { n: 4, sense: 'things you can HEAR', color: 'rgba(184,169,227,0.8)' },
+          { n: 3, sense: 'things you can TOUCH', color: 'rgba(100,160,220,0.8)' },
+          { n: 2, sense: 'things you can SMELL', color: 'rgba(244,162,97,0.8)' },
+          { n: 1, sense: 'thing you can TASTE', color: 'rgba(100,220,200,0.8)' }
+        ]
+        var groundingIdx = 0
+        const showGrounding = () => {
+          if (groundingIdx >= steps.length) {
+            area.innerHTML = `<p style="color:rgba(100,220,200,0.8); font-size:18px; font-family:'Nunito Sans',sans-serif;">You are grounded. 💛</p>
+              <button onclick="cancelBreathing()" style="${DASH_STYLES.btn}; margin-top:16px;">← Back</button>`
+            return
+          }
+          const s = steps[groundingIdx]
+          speakBreath(`Notice ${s.n} ${s.sense.toLowerCase()}`)
+          area.innerHTML = `
+            <p style="color:${s.color}; font-size:48px; font-weight:600; margin:0; font-family:'Nunito Sans',sans-serif;">${s.n}</p>
+            <p style="color:rgba(240,239,233,0.7); font-size:16px; margin:12px 0; font-family:'Nunito Sans',sans-serif;">${s.sense}</p>
+            <p style="color:rgba(184,169,227,0.4); font-size:13px; font-style:italic; margin-bottom:16px; font-family:'Nunito Sans',sans-serif;">Take your time, then continue</p>
+            <div style="display:flex; gap:8px; justify-content:center;">
+              <button onclick="groundingNext()" style="${DASH_STYLES.btn}">Next →</button>
+              <button onclick="cancelBreathing()" style="background:transparent; border:1px solid rgba(240,239,233,0.1); border-radius:10px; padding:8px 16px; color:rgba(240,239,233,0.3); font-size:13px; cursor:pointer; font-family:'Nunito Sans',sans-serif;">Cancel</button>
+            </div>
+          `
+          groundingIdx++
+        }
+        window.groundingNext = showGrounding
+        showGrounding()
+        return
+      }
+
+      if (type === 'gratitude') {
+        const prompts = [
+          'Name one small thing that felt okay today.',
+          'What is one person you are grateful for?',
+          'What is one thing your body did well today?',
+          'Name one moment of peace you felt recently.',
+          'What is one thing you are looking forward to?'
+        ]
+        const prompt = prompts[Math.floor(Math.random() * prompts.length)]
+        area.innerHTML = `
+          <p style="color:rgba(100,220,200,0.7); font-size:15px; margin-bottom:16px; font-style:italic; font-family:'Nunito Sans',sans-serif;">${prompt}</p>
+          <textarea id="gratitude-input" rows="3" style="${DASH_STYLES.input} max-width:400px;" placeholder="Write freely..."></textarea>
+          <button onclick="saveGratitude('${prompt.replace(/'/g, "\\'")}') " style="${DASH_STYLES.btn}; margin-top:16px;">Save 💛</button>
+        `
+        window.saveGratitude = async (p) => {
+          const text = document.getElementById('gratitude-input')?.value
+          if (text) await window.electronAPI.saveGratitudeNote({ prompt: p, text })
+          area.innerHTML = `<p style="color:rgba(100,220,200,0.7); font-size:16px; font-family:'Nunito Sans',sans-serif;">Saved 💛 Thank you for this moment.</p>`
+        }
+        return
+      }
+
+      if (type === 'reset') {
+        area.innerHTML = `
+          <div id="reset-orb" style="
+            width:100px; height:100px; border-radius:50%;
+            background:radial-gradient(circle, rgba(100,220,200,0.4), rgba(100,220,200,0.05));
+            box-shadow:0 0 30px rgba(100,220,200,0.3);
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:all 0.3s ease; margin-bottom:16px;
+          " onclick="triggerMoodReset()"
+            onmouseover="this.style.boxShadow='0 0 50px rgba(100,220,200,0.5)'"
+            onmouseout="this.style.boxShadow='0 0 30px rgba(100,220,200,0.3)'">
+            <span style="color:rgba(100,220,200,0.8); font-size:28px;">〜</span>
+          </div>
+          <p style="color:rgba(184,169,227,0.6); font-size:14px; font-style:italic; font-family:'Nunito Sans',sans-serif;">Tap to reset your energy</p>
+        `
+        window.triggerMoodReset = async () => {
+          const orb = document.getElementById('reset-orb')
+          if (orb) orb.style.boxShadow = '0 0 80px rgba(100,220,200,0.8)'
+          await window.electronAPI.playAffirmation()
+          setTimeout(() => { if (orb) orb.style.boxShadow = '0 0 30px rgba(100,220,200,0.3)' }, 2000)
+        }
+        return
+      }
+
+      if (type === 'timer') {
+        var timerSeconds = 300
+        area.innerHTML = `
+          <p style="color:rgba(100,220,200,0.7); font-size:13px; margin-bottom:12px; letter-spacing:0.1em; font-family:'Nunito Sans',sans-serif;">OCEAN TIMER</p>
+          <p id="timer-display" style="color:rgba(240,239,233,0.9); font-size:48px; font-weight:300; margin:0; letter-spacing:0.1em; font-family:'Nunito Sans',sans-serif;">5:00</p>
+          <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; justify-content:center;">
+            <button onclick="setTimer(300)" style="${DASH_STYLES.btn}">5 min</button>
+            <button onclick="setTimer(600)" style="${DASH_STYLES.btn}">10 min</button>
+            <button onclick="setTimer(900)" style="${DASH_STYLES.btn}">15 min</button>
+            <button onclick="cancelBreathing()" style="background:transparent; border:1px solid rgba(240,239,233,0.1); border-radius:10px; padding:8px 16px; color:rgba(240,239,233,0.3); font-size:13px; cursor:pointer; font-family:'Nunito Sans',sans-serif;">Cancel</button>
+          </div>
+        `
+        window.setTimer = (s) => {
+          timerSeconds = s
+          if (breathingInterval) clearInterval(breathingInterval)
+          breathingInterval = setInterval(() => {
+            timerSeconds--
+            const m = Math.floor(timerSeconds / 60)
+            const sec = timerSeconds % 60
+            const el = document.getElementById('timer-display')
+            if (el) el.textContent = `${m}:${sec.toString().padStart(2, '0')}`
+            if (timerSeconds <= 0) { clearInterval(breathingInterval); if (el) el.textContent = '✓ Done' }
+          }, 1000)
+        }
+        window.stopTimer = () => { if (breathingInterval) clearInterval(breathingInterval) }
+        window.setTimer(300)
+        return
+      }
+
+      if (type === 'pmr') {
+        const parts = ['Hands & Fists', 'Arms & Biceps', 'Shoulders', 'Face & Jaw', 'Chest & Breath', 'Stomach', 'Legs & Feet', 'Whole Body']
+        var pmrPartIdx = 0
+        const phases = ['Tense...', 'Hold...', 'Release...']
+        var pmrPhaseIdx = 0
+        const phaseDurations = [5, 3, 7]
+        var pmrCountdown = phaseDurations[0]
+        const showPMR = () => {
+          if (pmrPartIdx >= parts.length) {
+            area.innerHTML = `<p style="color:rgba(100,220,200,0.8); font-size:18px; font-family:'Nunito Sans',sans-serif;">Your body is relaxed 💛</p>`
+            return
+          }
+          area.innerHTML = `
+            <p style="color:rgba(184,169,227,0.5); font-size:12px; letter-spacing:0.15em; margin-bottom:8px; font-family:'Nunito Sans',sans-serif;">${parts[pmrPartIdx].toUpperCase()}</p>
+            <p id="pmr-phase" style="color:rgba(100,220,200,0.9); font-size:24px; margin:0; font-family:'Nunito Sans',sans-serif;">${phases[pmrPhaseIdx]}</p>
+            <p id="pmr-count" style="color:rgba(184,169,227,0.6); font-size:48px; font-weight:300; margin:8px 0; font-family:'Nunito Sans',sans-serif;">${pmrCountdown}</p>
+          `
+        }
+        showPMR()
+        breathingInterval = setInterval(() => {
+          pmrCountdown--
+          const countEl = document.getElementById('pmr-count')
+          const phaseEl = document.getElementById('pmr-phase')
+          if (countEl) countEl.textContent = pmrCountdown
+          if (pmrCountdown <= 0) {
+            pmrPhaseIdx++
+            if (pmrPhaseIdx >= phases.length) { pmrPhaseIdx = 0; pmrPartIdx++ }
+            pmrCountdown = phaseDurations[pmrPhaseIdx]
+            showPMR()
+          }
+        }, 1000)
+        return
+      }
+
+      // Box / 4-7-8
+      const EXERCISES = {
+        box: { steps: ['Inhale', 'Hold', 'Exhale', 'Hold'], durations: [4, 4, 4, 4], colors: ['rgba(100,220,200,0.8)', 'rgba(184,169,227,0.8)', 'rgba(100,160,220,0.8)', 'rgba(184,169,227,0.8)'], desc: 'Box breathing calms your nervous system' },
+        '478': { steps: ['Inhale', 'Hold', 'Exhale'], durations: [4, 7, 8], colors: ['rgba(100,220,200,0.8)', 'rgba(184,169,227,0.8)', 'rgba(100,160,220,0.8)'], desc: '4-7-8 activates your rest response' }
+      }
+      const ex = EXERCISES[type]
+      if (!ex) return
+      var exStepIdx = 0
+      var exCountdown = ex.durations[0]
+      const showStep = () => {
+        const color = ex.colors[exStepIdx]
+        const voiceMap = {
+          box: ['Breathe in...', 'Hold...', 'Breathe out...', 'Rest...'],
+          '478': ['Inhale for 4...', 'Hold for 7...', 'Exhale for 8...']
+        }
+        area.innerHTML = `
+          <div style="
+            width:80px; height:80px; border-radius:50%;
+            background:radial-gradient(circle, ${color.replace('0.8', '0.3')}, transparent);
+            border:2px solid ${color};
+            box-shadow:0 0 20px ${color.replace('0.8', '0.3')};
+            display:flex; align-items:center; justify-content:center;
+            margin-bottom:16px; transition:all 1s ease;
+          ">
+            <span style="color:${color}; font-size:24px; font-weight:300; font-family:'Nunito Sans',sans-serif;">${exCountdown}</span>
+          </div>
+          <p style="color:rgba(240,239,233,0.8); font-size:18px; margin:0; font-family:'Nunito Sans',sans-serif;">${ex.steps[exStepIdx]}</p>
+          <p style="color:rgba(184,169,227,0.4); font-size:12px; margin-top:8px; font-style:italic; font-family:'Nunito Sans',sans-serif;">${ex.desc}</p>
+          <button onclick="cancelBreathing()" style="background:transparent; border:1px solid rgba(240,239,233,0.1); border-radius:10px; padding:6px 16px; color:rgba(240,239,233,0.3); font-size:12px; cursor:pointer; font-family:'Nunito Sans',sans-serif; margin-top:16px;">Cancel</button>
+        `
+      }
+      showStep()
+      let prevStep = -1
+      breathingInterval = setInterval(() => {
+        exCountdown--
+        if (exCountdown <= 0) {
+          exStepIdx = (exStepIdx + 1) % ex.steps.length
+          exCountdown = ex.durations[exStepIdx]
+        }
+        // Speak phase name only when step changes
+        if (exStepIdx !== prevStep) {
+          const voiceMap = {
+            box: ['Breathe in', 'Hold', 'Breathe out', 'Rest'],
+            '478': ['Inhale for 4', 'Hold for 7', 'Exhale for 8']
+          }
+          const phrase = (voiceMap[type] || [])[exStepIdx]
+          if (phrase) speakBreath(phrase)
+          prevStep = exStepIdx
+        }
+        showStep()
+      }, 1000)
+    }
+
+    window.startBreathingExercise = startBreathingExercise
+
+    function getExportHTML() {
+      return `
+    <div style="${DASH_STYLES.section}">
+      <p style="${DASH_STYLES.heading}">Export Your Data</p>
+      <p style="${DASH_STYLES.subheading}">Everything stays yours — export anytime</p>
+
+      <div style="${DASH_STYLES.card}">
+        <p style="color:rgba(100,220,200,0.7); font-size:14px; margin-bottom:8px;">Journal Export</p>
+        <p style="color:rgba(184,169,227,0.5); font-size:12px; margin-bottom:16px;">All your conversations in a readable text file</p>
+        <button onclick="exportJournalDash()" style="${DASH_STYLES.btn}">Export Journal (.txt)</button>
+      </div>
+
+      <div style="${DASH_STYLES.card}">
+        <p style="color:rgba(100,220,200,0.7); font-size:14px; margin-bottom:8px;">Analysis Report</p>
+        <p style="color:rgba(184,169,227,0.5); font-size:12px; margin-bottom:16px;">Your mood trends and progress insights</p>
+        <button onclick="exportAnalysis()" style="${DASH_STYLES.btn}">Export Analysis (.txt)</button>
+      </div>
+
+      <div style="${DASH_STYLES.card}">
+        <p style="color:rgba(100,220,200,0.7); font-size:14px; margin-bottom:8px;">Therapist Report</p>
+        <p style="color:rgba(184,169,227,0.5); font-size:12px; margin-bottom:16px;">A clean summary formatted for your therapist or doctor</p>
+        <button onclick="exportTherapistReport()" style="${DASH_STYLES.btn}">Export Report (.txt)</button>
+      </div>
+
+      <div style="${DASH_STYLES.card}; border-color:rgba(232,100,100,0.2);">
+        <p style="color:rgba(232,100,100,0.7); font-size:14px; margin-bottom:8px;">Clear All Data</p>
+        <p style="color:rgba(184,169,227,0.5); font-size:12px; margin-bottom:16px;">Permanently delete all conversations, mood data and medical records</p>
+        <button onclick="clearAllData()" style="background:rgba(232,100,100,0.1); border:1px solid rgba(232,100,100,0.3); border-radius:10px; padding:8px 20px; color:rgba(232,100,100,0.8); font-family:'Nunito Sans',sans-serif; font-size:13px; cursor:pointer;">Clear All Data</button>
+      </div>
+    </div>
+  `
+    }
+
+    async function initExport() { }
+
+    async function exportAnalysis() {
+      await window.electronAPI.exportAnalysis()
+    }
+
+    async function exportTherapistReport() {
+      await window.electronAPI.exportTherapistReport()
+    }
+
+    async function clearAllData() {
+      if (!confirm('This will permanently delete ALL your data. This cannot be undone.')) return
+      await window.electronAPI.clearAllData()
+      alert('All data cleared.')
+    }
+
+    window.exportAnalysis = exportAnalysis
+    window.exportTherapistReport = exportTherapistReport
+    window.clearAllData = clearAllData
+
+    // Expose all functions to global window scope for inline HTML event handlers
+    window.showBreathingAnimation = showBreathingAnimation;
+    window.hideBreathingAnimation = hideBreathingAnimation;
+    window.setMicState = setMicState;
+    window.addMessage = addMessage;
+    window.sendTextMessage = sendTextMessage;
+    window.showCrisisOverlay = showCrisisOverlay;
+    window.hideCrisisOverlay = hideCrisisOverlay;
+    window.showMoodCheck = showMoodCheck;
+    window.submitMood = submitMood;
+    window.handleMicClick = handleMicClick;
+    window.transitionTo = transitionTo;
+    window.toggleSidebar = toggleSidebar;
+    window.loadJournalEntries = loadJournalEntries;
+    window.exportJournal = exportJournal;
+    window.showMedicalPanel = showMedicalPanel;
+    window.hideMedicalPanel = hideMedicalPanel;
+    window.extractMedicalRecord = extractMedicalRecord;
+    window.loadMedicalPanel = loadMedicalPanel;
+    window.saveMedicalRecords = saveMedicalRecords;
+    window.clearMedicalRecords = clearMedicalRecords;
+    window.openJournalEntry = openJournalEntry;
+    window.openDashboard = openDashboard;
+    window.closeDashboard = closeDashboard;
+    window.navigateToTab = navigateToTab;
+    window.startNewConversation = startNewConversation;
+    window.confirmEndSession = confirmEndSession;
+    window.endSessionConfirmed = endSessionConfirmed;
+
+    // Pre-expose new dashboard interactions
+    window.saveProfile = saveProfile;
+    window.searchJournalDash = searchJournalDash;
+    window.openJournalEntryDash = openJournalEntryDash;
+    window.toggleStarEntry = toggleStarEntry;
+    window.renameEntry = renameEntry;
+    window.deleteEntry = deleteEntry;
+    window.exportJournalDash = exportJournalDash;
+    window.exportAnalysis = exportAnalysis;
+    window.exportTherapistReport = exportTherapistReport;
+    window.clearAllData = clearAllData;
+    window.startBreathingExercise = startBreathingExercise;
+    window.getMoodColor = getMoodColor;
+    window.generateInsights = generateInsights;
+    window.groundingNext = window.groundingNext || (() => { });
+    window.saveGratitude = window.saveGratitude || (() => { });
+    window.triggerMoodReset = window.triggerMoodReset || (() => { });
+    window.setTimer = window.setTimer || (() => { });
+    window.stopTimer = window.stopTimer || (() => { });
+    window.activeTab = activeTab;
+  </script>
+  <script>
+    // Video intro sequence
+    const introVideos = [
+      { src: 'assets/intro-forest.mp4', duration: 8000, label: 'Forest' },
+      { src: 'assets/intro-waterfall.mp4', duration: 8000, label: 'Waterfall' },
+      { src: 'assets/intro-mountain.mp4', duration: 8000, label: 'Mountain' }
+    ]
+
+    const TRANSITION_MS = 800
+    let introIndex = 0
+    let introTimer = null
+    let introProgressTimer = null
+    let introStartTime = null
+    let isIntroEnding = false
+
+    // Calculate total time including transition delays
+    const TOTAL_INTRO_MS = introVideos.reduce((sum, v) => sum + v.duration + TRANSITION_MS, 0)
+
+    // --- Web Audio API Procedural Synthesis & Ambient Music ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    let masterCompressor = null;
+    let masterGain = null;
+    let currentSound = null;
+    let audioUnlocked = false; // track if we've had a user gesture
+
+    // Called on first mouse/click interaction on intro screen
+    function tryResumeAudio() {
+      const bgMusic = document.getElementById('bg-music');
+      if (bgMusic && bgMusic.paused) {
+        bgMusic.volume = 0.3;
+        bgMusic.play().catch(e => console.log('bg-music resume failed:', e));
+      }
+
+      if (audioUnlocked || !audioCtx) return;
+      if (audioCtx.state === 'running') { audioUnlocked = true; return; }
+      audioCtx.resume().then(() => {
+        if (audioCtx.state === 'running') {
+          audioUnlocked = true;
+          // If a scene is active but sound hasn't started yet, start it now
+          if (!currentSound && introIndex > 0 && !isIntroEnding) {
+            const sceneIdx = introIndex - 1; // introIndex was already incremented
+            if (sceneIdx === 0) currentSound = playForestSound();
+            else if (sceneIdx === 1) currentSound = playWaterfallSound();
+            else if (sceneIdx === 2) currentSound = playMountainSound();
+          }
+        }
+      }).catch(() => { });
+    }
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+        // Master dynamics compressor to prevent clipping and boost perceived loudness
+        masterCompressor = audioCtx.createDynamicsCompressor();
+        masterCompressor.threshold.value = -18;
+        masterCompressor.knee.value = 6;
+        masterCompressor.ratio.value = 4;
+        masterCompressor.attack.value = 0.003;
+        masterCompressor.release.value = 0.25;
+        // Master output gain (turned up significantly)
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 1.0;
+        masterCompressor.connect(masterGain);
+        masterGain.connect(audioCtx.destination);
+      }
+      // Always try to resume in case it was suspended
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // SCENE 1: Forest breeze - warm C Maj9 ambient pad (lush, clear)
+    function playForestSound() {
+      if (!audioCtx || !masterCompressor) return null;
+
+      const padGain = audioCtx.createGain();
+      padGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      padGain.gain.linearRampToValueAtTime(0.55, audioCtx.currentTime + 3.5); // Slow, warm attack
+
+      const padFilter = audioCtx.createBiquadFilter();
+      padFilter.type = 'lowpass';
+      padFilter.frequency.value = 900; // Open enough to hear harmonics
+      padFilter.Q.value = 0.8;
+
+      // Add gentle tremolo for life
+      const tremolo = audioCtx.createOscillator();
+      const tremoloGain = audioCtx.createGain();
+      tremolo.frequency.value = 0.4; // Very slow
+      tremoloGain.gain.value = 0.05;
+      tremolo.connect(tremoloGain);
+      tremoloGain.connect(padGain.gain);
+      tremolo.start();
+
+      const padNotes = [130.81, 164.81, 196.00, 246.94, 293.66]; // C3, E3, G3, B3, D4
+      const oscs = padNotes.map(freq => {
+        const osc = audioCtx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        // Slight detune between oscillators for richness
+        osc.detune.value = (Math.random() - 0.5) * 8;
+        osc.connect(padFilter);
+        osc.start();
+        return osc;
+      });
+      padFilter.connect(padGain);
+      padGain.connect(masterCompressor);
+
+      return {
+        source: {
+          stop: () => {
+            oscs.forEach(o => { try { o.stop(); } catch (e) { } });
+            try { tremolo.stop(); } catch (e) { }
+          }
+        },
+        gainNode: padGain
+      };
+    }
+
+    // SCENE 2: Waterfall - F Maj7 chord with sparkling bells
+    function playWaterfallSound() {
+      if (!audioCtx || !masterCompressor) return null;
+
+      const padGain = audioCtx.createGain();
+      padGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      padGain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 2.5);
+
+      const padFilter = audioCtx.createBiquadFilter();
+      padFilter.type = 'lowpass';
+      padFilter.frequency.value = 1200; // Brighter for waterfall shimmer
+      padFilter.Q.value = 0.7;
+
+      const padNotes = [174.61, 220.00, 261.63, 329.63]; // F3, A3, C4, E4
+      const oscs = padNotes.map(freq => {
+        const osc = audioCtx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        osc.detune.value = (Math.random() - 0.5) * 6;
+        osc.connect(padFilter);
+        osc.start();
+        return osc;
+      });
+      padFilter.connect(padGain);
+      padGain.connect(masterCompressor);
+
+      const activeBells = [];
+      const bellGain = audioCtx.createGain();
+      bellGain.gain.value = 0.35; // Audible bells
+      bellGain.connect(masterCompressor);
+
+      function playBell(delay, freq) {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        g.gain.setValueAtTime(0, audioCtx.currentTime + delay);
+        g.gain.linearRampToValueAtTime(1.0, audioCtx.currentTime + delay + 0.08);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 2.5);
+        osc.connect(g);
+        g.connect(bellGain);
+        osc.start(audioCtx.currentTime + delay);
+        osc.stop(audioCtx.currentTime + delay + 2.8);
+        activeBells.push(osc);
+      }
+
+      // Schedule sparkling bells across the scene
+      playBell(0.8, 880.00);  // A5
+      playBell(2.0, 1046.50); // C6
+      playBell(3.3, 1318.51); // E6
+      playBell(4.5, 1174.66); // D6
+      playBell(5.8, 1567.98); // G6
+      playBell(7.0, 1046.50); // C6 repeat
+
+      return {
+        source: {
+          stop: () => {
+            oscs.forEach(o => { try { o.stop(); } catch (e) { } });
+            activeBells.forEach(o => { try { o.stop(); } catch (e) { } });
+          }
+        },
+        gainNode: padGain,
+        additionalNodes: [
+          {
+            source: { stop: () => { } },
+            gainNode: bellGain
+          }
+        ]
+      };
+    }
+
+    // SCENE 3: Mountain - majestic G Maj7 with deep warmth
+    function playMountainSound() {
+      if (!audioCtx || !masterCompressor) return null;
+
+      const padGain = audioCtx.createGain();
+      padGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      padGain.gain.linearRampToValueAtTime(0.55, audioCtx.currentTime + 4.0); // Very slow majestic swell
+
+      const padFilter = audioCtx.createBiquadFilter();
+      padFilter.type = 'lowpass';
+      padFilter.frequency.value = 700; // Deeper, warmer tone for mountains
+      padFilter.Q.value = 1.0;
+
+      // Low rumble sub-bass for mountain depth
+      const subOsc = audioCtx.createOscillator();
+      const subGain = audioCtx.createGain();
+      subOsc.type = 'sine';
+      subOsc.frequency.value = 49.00; // G1 sub-bass
+      subGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      subGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 5.0);
+      subOsc.connect(subGain);
+      subGain.connect(masterCompressor);
+      subOsc.start();
+
+      const padNotes = [98.00, 146.83, 196.00, 246.94, 369.99]; // G2, D3, G3, B3, F#4
+      const oscs = padNotes.map(freq => {
+        const osc = audioCtx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        osc.detune.value = (Math.random() - 0.5) * 10;
+        osc.connect(padFilter);
+        osc.start();
+        return osc;
+      });
+      padFilter.connect(padGain);
+      padGain.connect(masterCompressor);
+
+      return {
+        source: {
+          stop: () => {
+            oscs.forEach(o => { try { o.stop(); } catch (e) { } });
+            try { subOsc.stop(); } catch (e) { }
+          }
+        },
+        gainNode: padGain,
+        additionalNodes: [
+          {
+            source: { stop: () => { } },
+            gainNode: subGain
+          }
+        ]
+      };
+    }
+
+    // Stop a sound node gracefully
+    function fadeOutAndStop(soundObj, duration = 1) {
+      if (!soundObj) return;
+
+      // If it's a raw oscillator/node with a stop function but no gain control
+      if (soundObj.stop && !soundObj.gainNode) {
+        try { soundObj.stop(); } catch (e) { }
+        return;
+      }
+
+      const { source, gainNode, additionalNodes } = soundObj;
+      if (additionalNodes && Array.isArray(additionalNodes)) {
+        additionalNodes.forEach(node => fadeOutAndStop(node, duration));
+      }
+      if (source && !gainNode) {
+        try { source.stop(); } catch (e) { }
+        return;
+      }
+      if (!gainNode) return;
+      try {
+        gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + duration);
+        setTimeout(() => {
+          try { source.stop(); } catch (e) { }
+        }, duration * 1000);
+      } catch (e) {
+        try { source.stop(); } catch (err) { }
+      }
+    }
+
+    async function startIntro() {
+      initAudio();
+
+      const bgMusic = document.getElementById('bg-music');
+      if (bgMusic) {
+        bgMusic.volume = 0.3;
+        bgMusic.play().catch(e => console.log('bg-music autoplay blocked:', e));
+      }
+
+      // Wait for AudioContext to be running before starting video+audio
+      if (audioCtx && audioCtx.state !== 'running') {
+        try { await audioCtx.resume(); } catch (e) { }
+      }
+      playNextIntroVideo();
+
+      // Progress bar
+      introStartTime = Date.now()
+      introProgressTimer = setInterval(() => {
+        if (isIntroEnding) return
+        const elapsed = Date.now() - introStartTime
+        const pct = Math.min(elapsed / TOTAL_INTRO_MS * 100, 100)
+        const bar = document.getElementById('intro-bar')
+        if (bar) bar.style.width = pct + '%'
+      }, 100)
+    }
+
+    function playNextIntroVideo() {
+      if (isIntroEnding) return
+      if (introIndex >= introVideos.length) {
+        return runBrandReveal()
+      }
+
+      const v = introVideos[introIndex]
+      const vid = document.getElementById('intro-video')
+      if (!vid) return
+
+      // Smooth crossfade: fade out previous
+      vid.style.transition = `opacity ${TRANSITION_MS}ms ease`
+      vid.style.opacity = '0'
+
+      if (currentSound) {
+        fadeOutAndStop(currentSound, TRANSITION_MS / 1000)
+      }
+
+      setTimeout(() => {
+        if (isIntroEnding) return
+        vid.src = v.src
+        vid.load()
+        vid.play().catch(e => console.log('Video play failed:', e))
+        vid.style.opacity = '0.85'
+
+        // Play matching procedural sound
+        if (audioCtx) {
+          // Ensure context is running before spawning oscillators
+          const playSound = () => {
+            if (introIndex === 0) {
+              currentSound = playForestSound()
+            } else if (introIndex === 1) {
+              currentSound = playWaterfallSound()
+            } else if (introIndex === 2) {
+              currentSound = playMountainSound()
+            }
+          };
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume().then(playSound).catch(playSound);
+          } else {
+            playSound();
+          }
+        }
+
+        introIndex++
+        // Wait for the duration of the current video before moving to the next
+        introTimer = setTimeout(playNextIntroVideo, v.duration)
+      }, TRANSITION_MS)
+    }
+
+    function playBrandChime() {
+      if (!audioCtx) initAudio();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const dest = masterCompressor || audioCtx.destination;
+      const frequencies = [523, 659, 784, 1047]; // C5, E5, G5, C6
+      frequencies.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gNode = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+
+        gNode.gain.setValueAtTime(0, audioCtx.currentTime + i * 0.3);
+        gNode.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + i * 0.3 + 0.1); // Much louder chime
+        gNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.3 + 2.5);
+
+        osc.connect(gNode);
+        gNode.connect(dest);
+        osc.start(audioCtx.currentTime + i * 0.3);
+        osc.stop(audioCtx.currentTime + i * 0.3 + 3);
+      });
+    }
+
+    async function runBrandReveal() {
+      if (isIntroEnding) return;
+
+      // Fade out video and standard overlay text
+      const vid = document.getElementById('intro-video');
+      if (vid) vid.style.opacity = '0';
+
+      const overlayText = document.getElementById('intro-overlay-text');
+      if (overlayText) overlayText.style.opacity = '0';
+
+      // Fade out any playing intro music
+      if (currentSound) {
+        fadeOutAndStop(currentSound, 1.0);
+        currentSound = null;
+      }
+
+      const delay = ms => new Promise(r => setTimeout(r, ms));
+      await delay(1000); // Wait for video/text fade out
+      if (isIntroEnding) return;
+
+      // Show brand reveal container
+      const brandContainer = document.getElementById('brand-reveal-container');
+      const brandSuffix = document.getElementById('brand-suffix');
+      const brandTagline = document.getElementById('brand-tagline');
+
+      if (brandContainer) {
+        brandContainer.style.opacity = '1';
+        playBrandChime(); // Play the arpeggio chime exactly as brand fades in
+      }
+
+      await delay(2500); // Hold MindSafe
+      if (isIntroEnding) return;
+
+      // Fade in tagline
+      if (brandTagline) brandTagline.style.opacity = '1';
+      await delay(1500);
+      if (isIntroEnding) return;
+
+      // Transition Safe -> Saved
+      if (brandSuffix) {
+        brandSuffix.style.opacity = '0';
+        await delay(400);
+        brandSuffix.textContent = 'Saved';
+        brandSuffix.style.opacity = '1';
+      }
+      await delay(2500); // Hold MindSaved
+      if (isIntroEnding) return;
+
+      // Fade out tagline
+      if (brandTagline) brandTagline.style.opacity = '0';
+      await delay(800);
+      if (isIntroEnding) return;
+
+      // Transition Saved -> Safe
+      if (brandSuffix) {
+        brandSuffix.style.opacity = '0';
+        await delay(400);
+        brandSuffix.textContent = 'Safe';
+        brandSuffix.style.opacity = '1';
+      }
+      await delay(2000); // Hold final MindSafe
+      if (isIntroEnding) return;
+
+      // Fade out brand reveal container
+      if (brandContainer) brandContainer.style.opacity = '0';
+      await delay(1000);
+
+      endIntro();
+    }
+
+    function endIntro() {
+      if (isIntroEnding) return
+      isIntroEnding = true
+
+      clearTimeout(introTimer)
+      clearInterval(introProgressTimer)
+
+      if (currentSound) {
+        fadeOutAndStop(currentSound, 1.5)
+      }
+
+      // Clean up AudioContext gracefully after fade out
+      setTimeout(() => {
+        if (audioCtx) {
+          try { audioCtx.close(); } catch (e) { }
+          audioCtx = null;
+          masterCompressor = null;
+          masterGain = null;
+        }
+      }, 2000);
+
+      const screen = document.getElementById('intro-screen')
+      if (screen) {
+        screen.style.transition = 'opacity 1.5s ease'
+        screen.style.opacity = '0'
+        setTimeout(() => {
+          screen.remove()
+          beginJourney()
+        }, 1500)
+      } else {
+        beginJourney()
+      }
+    }
+
+    function skipIntro() {
+      endIntro()
+    }
+
+    // Check if assets exist, start intro or skip straight to app
+    window.addEventListener('DOMContentLoaded', () => {
+      fetch('assets/intro-forest.mp4', { method: 'HEAD' })
+        .then(r => r.ok ? startIntro() : beginJourney())
+        .catch(() => beginJourney())
+    })
+  </script>
+</body>
+
+</html>

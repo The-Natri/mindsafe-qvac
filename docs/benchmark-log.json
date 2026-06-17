@@ -1,0 +1,112 @@
+[
+  {
+    "timestamp": "2026-06-13",
+    "test": "medpsy_baseline_completion",
+    "hardware": {
+      "cpu": "Intel i7-12700H",
+      "gpu": "Intel Iris Xe (CPU inference)",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "model_load_time_ms": 3439,
+    "time_to_first_token_ms": 197.70,
+    "tokens_per_second": 19.44,
+    "ctx_size": 4096,
+    "prompt": "I have been feeling anxious lately. What should I do?"
+  },
+  {
+    "timestamp": "2026-06-13",
+    "test": "medpsy_baseline_completion_run2",
+    "hardware": {
+      "cpu": "Intel i7-12700H",
+      "gpu": "Intel Iris Xe (CPU inference)",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "model_load_time_ms": 3627,
+    "time_to_first_token_ms": 190.93,
+    "tokens_per_second": 18.33,
+    "ctx_size": 4096,
+    "prompt": "I have been feeling anxious lately. What should I do?"
+  },
+  {
+    "timestamp": "2026-06-13",
+    "test": "whisper_stt_baseline",
+    "model": "WHISPER_EN_TINY_Q8_0",
+    "hardware": "Intel i7-12700H, CPU only, Windows 11",
+    "transcription_duration_ms": 827,
+    "model_load_ms": 12014,
+    "input": "test.wav - synthetic speech",
+    "output": "I have been feeling stressed about work lately.",
+    "accuracy": "100% match"
+  },
+  {
+    "timestamp": "2026-06-14",
+    "test": "rag_ingest_and_retrieve",
+    "model": "EMBEDDINGGEMMA_300M_Q4_0",
+    "hardware": "Intel i7-12700H, CPU only, Windows 11",
+    "ingest_duration_ms": 7813,
+    "chunks_created": 1,
+    "retrieval_top1_score": 0.7012,
+    "retrieval_top1_text_match": true
+  },
+  {
+    "timestamp": "2026-06-14",
+    "test": "full_pipeline_e2e",
+    "hardware": "Intel i7-12700H, CPU only, Windows 11, 16GB RAM",
+    "crisis_path": {
+      "input": "I want to hurt myself",
+      "total_latency_ms": 0,
+      "models_loaded": 0
+    },
+    "emotional_path": {
+      "input": "I have been feeling anxious about work and stress lately",
+      "retrieval_duration_ms": 8546,
+      "medpsy_load_ms": 6205,
+      "medpsy_ttft_ms": 477.74,
+      "medpsy_tokens_per_sec": 19.27,
+      "medpsy_generation_ms": 20555,
+      "total_latency_ms": 35306,
+      "rag_context_used": true,
+      "rag_chunks_used": 1
+    }
+  },
+  {
+    "timestamp": "2026-06-14",
+    "test": "optimized_pipeline_final",
+    "hardware": "Intel i7-12700H, CPU only, Windows 11, 16GB RAM",
+    "optimizations": [
+      "persistent model sessions (load once, reuse)",
+      "max_tokens: 120 cap for voice-friendly responses",
+      "reasoning_budget: 0 to skip <think> blocks",
+      "concise system prompt (2-3 sentences)"
+    ],
+    "one_time_init_ms": 9479,
+    "turns": [
+      {"turn": 1, "ttftMs": 704.9, "tokensPerSec": 17.38, "totalMs": 8272, "responseLength": 521},
+      {"turn": 2, "ttftMs": 365.3, "tokensPerSec": 18.93, "totalMs": 4487, "responseLength": 335},
+      {"turn": 3, "ttftMs": 290.3, "tokensPerSec": 18.15, "totalMs": 3569, "responseLength": 246}
+    ],
+    "improvement_vs_baseline": "Turn time reduced 68-83% (25.6s->8.3s, 21.0s->4.5s, 13.7s->3.6s)"
+  },
+  {
+    "timestamp": "2026-06-14",
+    "test": "e2e_voice_pipeline_persistent_tts",
+    "hardware": "Intel i7-12700H, CPU only, Windows 11, 16GB RAM",
+    "breakdown": {
+      "stt_ms": 1344,
+      "pipeline_ms": 6421,
+      "tts_ms": 4812,
+      "total_ms": 12577
+    },
+    "improvement_vs_baseline": "TTS dropped 49% (9355ms -> 4812ms). Total turn time dropped 33% (18835ms -> 12577ms).",
+    "note": "All three engines (embedding, MedPsy, TTS) now persistent. STT still loads per turn - next optimization target."
+  },
+  {
+    "timestamp": "2026-06-16",
+    "medical_extraction": "Local QVAC OCR - zero cloud dependencies. Fully private."
+  }
+]
+

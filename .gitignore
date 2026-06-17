@@ -1,0 +1,8 @@
+node_modules/
+electron/assets/*.mp4
+electron/assets/*.mp3
+*.gguf
+*.onnx
+*.bin
+data/*.json
+.env

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MindSafe - Welcome</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: none !important;
+        }
+
+        #click-to-start {
+            cursor: none !important;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            cursor: none;
+            user-select: none;
+        }
+
+        .intro-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* Skip Button styling */
+        #skip-btn {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 1000;
+            pointer-events: none;
+            transition: opacity 0.5s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        #skip-btn.visible {
+            opacity: 0.4;
+            pointer-events: auto;
+        }
+
+        #skip-btn:hover {
+            opacity: 0.85 !important;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Scenes general configuration */
+        .scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* --- SCENE 1: MISTY FOREST (0-3s) --- */
+        #scene1 {
+            background: linear-gradient(180deg, #0a1a08 0%, #0d2510 40%, #152d10 70%, #0a1a08 100%);
+            z-index: 10;
+        }
+
+        .forest-tree-silhouette {
+            position: absolute;
+            bottom: 0;
+            clip-path: polygon(50% 0%, 20% 25%, 35% 25%, 15% 50%, 40% 50%, 10% 75%, 45% 75%, 5% 100%, 95% 100%, 55% 75%, 90% 75%, 60% 50%, 85% 50%, 65% 25%, 80% 25%);
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.6));
+            box-shadow: 0 0 40px rgba(20,80,20,0.3);
+        }
+
+        /* Mist Layer */
+        .mist-layer {
+            position: absolute;
+            top: 20%;
+            left: -30%;
+            width: 160%;
+            height: 80%;
+            background: radial-gradient(ellipse at center, rgba(220, 225, 230, 0.15) 0%, rgba(220, 225, 230, 0) 70%);
+            opacity: 0.15;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0) scaleY(1); }
+            100% { transform: translateX(20%) scaleY(1.1); }
+        }
+
+        /* Light Rays */
+        .light-rays-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: fadeInRays 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: none;
+        }
+
+        .light-ray {
+            position: absolute;
+            top: -40%;
+            left: -20%;
+            width: 160vw;
+            background: linear-gradient(90deg, rgba(255,230,150,0) calc(50% - 1.5px), rgba(255,230,150,0.12) 50%, rgba(255,230,150,0) calc(50% + 1.5px));
+            transform-origin: top left;
+        }
+
+        @keyframes fadeInRays {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Fireflies */
+        .firefly {
+            position: absolute;
+            background-color: rgba(255, 200, 50, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255,200,50,0.9);
+            opacity: 0;
+            pointer-events: none;
+            animation: floatUp 8s ease-in-out infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) translateX(0);
+                opacity: 0;
+            }
+            20% { opacity: 0.9; }
+            80% { opacity: 0.9; }
+            100% {
+                transform: translateY(-10vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* --- SCENE 2: WATERFALL (3-6s) --- */
+        #scene2 {
+            background: linear-gradient(180deg, #0a1520 0%, #0d2535 50%, #0a1a2a 100%);
+            z-index: 20;
+        }
+
+        .waterfall-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100%;
+            overflow: hidden;
+            z-index: 22;
+        }
+
+        .waterfall-blur {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100%;
+            background: rgba(180, 210, 255, 0.15);
+            filter: blur(8px);
+            z-index: 21;
+        }
+
+        .waterfall-flow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(to bottom,
+                rgba(255,255,255,0) 0px,
+                rgba(255,255,255,0) 40px,
+                rgba(180,210,255,0.3) 60px,
+                rgba(255,255,255,0.15) 70px,
+                rgba(255,255,255,0) 100px
+            );
+            background-size: 100% 200px;
+            animation: waterfallFlow 0.6s linear infinite;
+        }
+
+        @keyframes waterfallFlow {
+            0% { background-position-y: 0px; }
+            100% { background-position-y: 200px; }
+        }
+
+        .waterfall-mist {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 160px;
+            background: radial-gradient(ellipse at center, rgba(200,220,255,0.08) 0%, rgba(200,220,255,0) 70%);
+            filter: blur(10px);
+            z-index: 23;
+            animation: mistSpreading 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes mistSpreading {
+            0% { transform: translateX(-50%) scale(0.9); opacity: 0.7; }
+            100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+        }
+
+        .rock-silhouette {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background: #03080e;
+            z-index: 24;
+        }
+
+        .rock-left {
+            left: 0;
+            width: 40%;
+            clip-path: polygon(0 0, 80% 0, 70% 15%, 85% 30%, 65% 50%, 90% 68%, 60% 82%, 75% 100%, 0 100%);
+        }
+
+        .rock-right {
+            right: 0;
+            width: 40%;
+            clip-path: polygon(100% 0, 20% 0, 30% 15%, 15% 30%, 35% 50%, 10% 68%, 40% 82%, 25% 100%, 100% 100%);
+        }
+
+        .droplet {
+            position: absolute;
+            width: 2px;
+            height: 6px;
+            background-color: rgba(180,210,255,0.5);
+            border-radius: 50%;
+            animation: dropletFall 0.8s linear infinite;
+            z-index: 25;
+        }
+
+        @keyframes dropletFall {
+            0% { transform: translateY(-5vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(105vh); opacity: 0; }
+        }
+
+        /* --- SCENE 3: MOUNTAIN PEAK (6-9s) --- */
+        #scene3 {
+            background: linear-gradient(180deg, #050510 0%, #0a0a20 30%, #0d1535 60%, #1a2040 100%);
+            z-index: 30;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255,255,255,0.8);
+            z-index: 30;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes vignetteFade {
+            to { opacity: 1; }
+        }
+
+        .mountain-peak {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75vw;
+            height: 50vh;
+            background-color: #0a0a15;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            z-index: 32;
+        }
+
+        .mountain-snowcap {
+            position: absolute;
+            bottom: 35vh; /* 50vh * 70% from bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22.5vw; /* top 30% width */
+            height: 15vh;
+            background: linear-gradient(180deg, rgba(220,230,255,0.9) 0%, rgba(180,200,240,0.8) 100%);
+            clip-path: polygon(50% 0%, 100% 100%, 80% 90%, 60% 100%, 50% 85%, 40% 100%, 20% 90%, 0% 100%);
+            z-index: 33;
+        }
+
+        /* Aurora effect */
+        .aurora-container {
+            position: absolute;
+            top: 5%;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            overflow: hidden;
+            z-index: 31;
+        }
+
+        .aurora-band {
+            position: absolute;
+            width: 200%;
+            height: 120px;
+            filter: blur(35px);
+            opacity: 0.8;
+            animation: auroraShift 12s ease-in-out infinite alternate;
+        }
+
+        .aurora-green {
+            top: 10%;
+            left: -50%;
+            background: linear-gradient(90deg, rgba(80,200,120,0) 0%, rgba(80,200,120,0.12) 50%, rgba(80,200,120,0) 100%);
+        }
+
+        .aurora-purple {
+            top: 25%;
+            left: -30%;
+            background: linear-gradient(90deg, rgba(150,80,200,0) 0%, rgba(150,80,200,0.10) 50%, rgba(150,80,200,0) 100%);
+            animation-delay: -4s;
+        }
+
+        @keyframes auroraShift {
+            0% { transform: translateX(-10%) translateY(0) scaleY(1); }
+            100% { transform: translateX(10%) translateY(15px) scaleY(1.2); }
+        }
+
+        /* --- SCENE 4: BRAND REVEAL (9-12s) --- */
+        #scene4 {
+            background: radial-gradient(ellipse at center, #1a1535 0%, #0d1117 50%, #080b12 100%);
+            z-index: 40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-wrapper {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .brand-title-text {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .brand-suffix-container {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .brand-suffix {
+            color: #f4a261;
+            text-shadow: 0 0 60px rgba(244,162,97,0.5);
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .brand-suffix:not(.active) {
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+        }
+
+        .brand-suffix.active {
+            opacity: 1;
+        }
+
+        .brand-slogan {
+            color: #d1c4e9;
+            font-style: italic;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body style="cursor: none;">
+
+<!-- CLICK TO START OVERLAY -->
+<div id="click-to-start" style="
+  position:fixed; inset:0; z-index:9999;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background:#000; cursor:pointer;"
+  onclick="startIntro()">
+  <div style="color:#f4a261; font-size:24px; 
+    font-family:sans-serif; text-align:center">
+    <div style="font-size:48px; margin-bottom:16px">
+      ♡
+    </div>
+    MindSafe
+    <div style="font-size:14px; 
+      color:rgba(244,162,97,0.6); margin-top:12px">
+      Click anywhere to begin
+    </div>
+  </div>
+</div>
+
+<div class="intro-container">
+    <button id="skip-btn" onclick="triggerIntroComplete()">Skip intro</button>
+
+    <!-- SCENE 1: FOREST -->
+    <div class="scene" id="scene1">
+        <!-- 9 trees silhouette positioned across the bottom of the screen with varying heights (60-90%) and background colors (#0a1505 to #0d1a08) -->
+        <div class="forest-tree-silhouette" style="left: 4%; width: 12%; height: 70%; background: #0d1f08;"></div>
+        <div class="forest-tree-silhouette" style="left: 14%; width: 15%; height: 85%; background: #0f2108;"></div>
+        <div class="forest-tree-silhouette" style="left: 26%; width: 13%; height: 65%; background: #112308;"></div>
+        <div class="forest-tree-silhouette" style="left: 38%; width: 17%; height: 90%; background: #132508;"></div>
+        <div class="forest-tree-silhouette" style="left: 52%; width: 14%; height: 75%; background: #152708;"></div>
+        <div class="forest-tree-silhouette" style="left: 64%; width: 16%; height: 80%; background: #102208;"></div>
+        <div class="forest-tree-silhouette" style="left: 76%; width: 13%; height: 62%; background: #122408;"></div>
+        <div class="forest-tree-silhouette" style="left: 86%; width: 15%; height: 72%; background: #142608;"></div>
+        <div class="forest-tree-silhouette" style="left: 93%; width: 12%; height: 88%; background: #152808;"></div>
+        
+        <!-- Mist Layer -->
+        <div class="mist-layer"></div>
+
+        <!-- 7 Amber Light Rays (Width: 3px, Opacity: 0.12) -->
+        <div class="light-rays-container">
+            <div class="light-ray" style="transform: rotate(30deg); top: -20%; left: -10%; height: 90px;"></div>
+            <div class="light-ray" style="transform: rotate(34deg); top: -30%; left: -5%; height: 60px;"></div>
+            <div class="light-ray" style="transform: rotate(28deg); top: -40%; left: -15%; height: 110px;"></div>
+            <div class="light-ray" style="transform: rotate(32deg); top: -15%; left: 0%; height: 75px;"></div>
+            <div class="light-ray" style="transform: rotate(26deg); top: -25%; left: -8%; height: 80px;"></div>
+            <div class="light-ray" style="transform: rotate(36deg); top: -35%; left: -12%; height: 95px;"></div>
+            <div class="light-ray" style="transform: rotate(31deg); top: -10%; left: -3%; height: 70px;"></div>
+        </div>
+
+        <!-- 12 Fireflies rgba(255,200,50,0.9) 4-6px floating upward -->
+        <div class="firefly" style="left: 10%; width: 4px; height: 4px; animation-delay: 0.2s; animation-duration: 7.5s;"></div>
+        <div class="firefly" style="left: 22%; width: 5px; height: 5px; animation-delay: 1.5s; animation-duration: 9s;"></div>
+        <div class="firefly" style="left: 35%; width: 4px; height: 4px; animation-delay: 0.8s; animation-duration: 6.8s;"></div>
+        <div class="firefly" style="left: 48%; width: 6px; height: 6px; animation-delay: 2.4s; animation-duration: 8.5s;"></div>
+        <div class="firefly" style="left: 58%; width: 5px; height: 5px; animation-delay: 0.1s; animation-duration: 7.2s;"></div>
+        <div class="firefly" style="left: 70%; width: 6px; height: 6px; animation-delay: 3.2s; animation-duration: 9.5s;"></div>
+        <div class="firefly" style="left: 82%; width: 4px; height: 4px; animation-delay: 1.1s; animation-duration: 8s;"></div>
+        <div class="firefly" style="left: 92%; width: 5px; height: 5px; animation-delay: 2.0s; animation-duration: 7.8s;"></div>
+        <div class="firefly" style="left: 15%; width: 5px; height: 5px; animation-delay: 4.0s; animation-duration: 8.2s;"></div>
+        <div class="firefly" style="left: 40%; width: 4px; height: 4px; animation-delay: 3.5s; animation-duration: 7.0s;"></div>
+        <div class="firefly" style="left: 63%; width: 6px; height: 6px; animation-delay: 4.8s; animation-duration: 8.8s;"></div>
+        <div class="firefly" style="left: 85%; width: 5px; height: 5px; animation-delay: 2.7s; animation-duration: 7.4s;"></div>
+
+        <!-- Forest Floor Glow -->
+        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 15%; background: rgba(20,60,10,0.3); filter: blur(20px); z-index: 15; pointer-events: none;"></div>
+    </div>
+
+    <!-- SCENE 2: WATERFALL -->
+    <div class="scene" id="scene2">
+        <div class="waterfall-blur"></div>
+        <div class="waterfall-container">
+            <div class="waterfall-flow"></div>
+        </div>
+        <div class="waterfall-mist"></div>
+
+        <!-- Rocky sides -->
+        <div class="rock-silhouette rock-left"></div>
+        <div class="rock-silhouette rock-right"></div>
+
+        <!-- Water particles falling downward -->
+        <div class="droplet" style="left: 47%; animation-delay: 0.1s; animation-duration: 0.6s;"></div>
+        <div class="droplet" style="left: 48%; animation-delay: 0.3s; animation-duration: 0.7s;"></div>
+        <div class="droplet" style="left: 49%; animation-delay: 0s; animation-duration: 0.5s;"></div>
+        <div class="droplet" style="left: 50%; animation-delay: 0.2s; animation-duration: 0.8s;"></div>
+        <div class="droplet" style="left: 51%; animation-delay: 0.4s; animation-duration: 0.6s;"></div>
+        <div class="droplet" style="left: 52%; animation-delay: 0.15s; animation-duration: 0.55s;"></div>
+        <div class="droplet" style="left: 53%; animation-delay: 0.35s; animation-duration: 0.75s;"></div>
+        <div class="droplet" style="left: 46%; animation-delay: 0.25s; animation-duration: 0.65s;"></div>
+        <div class="droplet" style="left: 54%; animation-delay: 0.05s; animation-duration: 0.7s;"></div>
+    </div>
+
+    <!-- SCENE 3: MOUNTAIN PEAK -->
+    <div class="scene" id="scene3">
+        <!-- Vignette overlay for mountain scene -->
+        <div style="position:absolute; inset:0; background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%); pointer-events:none; z-index:35; opacity: 0; animation: vignetteFade 3s ease-in-out forwards; animation-delay: 0.5s;"></div>
+        <!-- Stars will be generated dynamically via JavaScript -->
+
+        <!-- Aurora effect -->
+        <div class="aurora-container">
+            <div class="aurora-band aurora-green"></div>
+            <div class="aurora-band aurora-purple"></div>
+        </div>
+
+        <!-- Peaks -->
+        <div class="mountain-peak"></div>
+        <div class="mountain-snowcap"></div>
+    </div>
+
+    <!-- SCENE 4: BRAND REVEAL -->
+    <div class="scene" id="scene4" style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <div id="brand-container" style="text-align:center; opacity:0; transition: opacity 1s ease-in-out">
+            <div style="font-size:64px; font-weight:800; font-family:sans-serif; line-height:1.1">
+                <span style="color:#f0efe9">Mind</span><span id="brand-suffix" style="color:#f4a261; text-shadow: 0 0 40px rgba(244,162,97,0.6), 0 0 80px rgba(244,162,97,0.3)">Safe</span>
+            </div>
+            <div id="brand-tagline" style="color:#a8e6c0; font-style:italic; font-size:22px; margin-top:12px; opacity:0; transition: opacity 1s ease-in-out; font-family:sans-serif; letter-spacing:0.05em">
+                because a safe mind is
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let introFinished = false;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    let currentSound = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new AudioContext();
+        }
+    }
+
+    // SCENE 1: Forest breeze with bird chirps and leaf rustling
+    function playForestSound() {
+        if (!audioCtx) return null;
+        const nodes = [];
+        
+        // Base wind layer
+        const windBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 4, audioCtx.sampleRate);
+        const windData = windBuffer.getChannelData(0);
+        for (let i = 0; i < windData.length; i++) {
+            windData[i] = Math.random() * 2 - 1;
+        }
+        const windSource = audioCtx.createBufferSource();
+        windSource.buffer = windBuffer;
+        windSource.loop = true;
+        const windFilter = audioCtx.createBiquadFilter();
+        windFilter.type = 'bandpass';
+        windFilter.frequency.value = 300;
+        windFilter.Q.value = 0.3;
+        const windGain = audioCtx.createGain();
+        windGain.gain.setValueAtTime(0, audioCtx.currentTime);
+        windGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1.5);
+        windSource.connect(windFilter);
+        windFilter.connect(windGain);
+        windGain.connect(audioCtx.destination);
+        windSource.start();
+        nodes.push({ source: windSource, gainNode: windGain });
+
+        // Leaf rustling - high frequency noise bursts
+        const rustleBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 4, audioCtx.sampleRate);
+        const rustleData = rustleBuffer.getChannelData(0);
+        for (let i = 0; i < rustleData.length; i++) {
+            rustleData[i] = Math.random() * 2 - 1;
+        }
+        const rustleSource = audioCtx.createBufferSource();
+        rustleSource.buffer = rustleBuffer;
+        rustleSource.loop = true;
+        const rustleFilter = audioCtx.createBiquadFilter();
+        rustleFilter.type = 'highpass';
+        rustleFilter.frequency.value = 3000;
+        const rustleGain = audioCtx.createGain();
+        rustleGain.gain.setValueAtTime(0, audioCtx.currentTime);
+        rustleGain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 2);
+        rustleSource.connect(rustleFilter);
+        rustleFilter.connect(rustleGain);
+        rustleGain.connect(audioCtx.destination);
+        rustleSource.start();
+        nodes.push({ source: rustleSource, gainNode: rustleGain });
+
+        // Bird chirps - short sine wave bursts at random intervals
+        function chirp(delay, freq, duration) {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+            osc.frequency.linearRampToValueAtTime(freq * 1.3, audioCtx.currentTime + delay + duration * 0.3);
+            osc.frequency.linearRampToValueAtTime(freq * 0.9, audioCtx.currentTime + delay + duration);
+            g.gain.setValueAtTime(0, audioCtx.currentTime + delay);
+            g.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + delay + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration);
+            osc.connect(g);
+            g.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + delay);
+            osc.stop(audioCtx.currentTime + delay + duration);
+        }
+
+        // Schedule several bird chirps
+        chirp(0.5, 2800, 0.15);
+        chirp(0.65, 3200, 0.12);
+        chirp(1.2, 2600, 0.18);
+        chirp(1.8, 3000, 0.1);
+        chirp(1.9, 3400, 0.08);
+        chirp(2.5, 2900, 0.15);
+        chirp(2.65, 3100, 0.12);
+
+        // Return first node with additional nodes attached for fade control
+        const mainNode = nodes[0];
+        mainNode.additionalNodes = nodes.slice(1);
+        return mainNode;
+    }
+
+    // SCENE 2: Waterfall
+    function playWaterfallSound() {
+        if (!audioCtx) return null;
+        
+        // Pink noise for waterfall
+        const bufferSize = audioCtx.sampleRate * 3;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let b0=0, b1=0, b2=0, b3=0, b4=0, b5=0, b6=0;
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            b0 = 0.99886*b0 + white*0.0555179;
+            b1 = 0.99332*b1 + white*0.0750759;
+            b2 = 0.96900*b2 + white*0.1538520;
+            b3 = 0.86650*b3 + white*0.3104856;
+            b4 = 0.55000*b4 + white*0.5329522;
+            b5 = -0.7616*b5 - white*0.0168980;
+            data[i] = (b0+b1+b2+b3+b4+b5+b6+white*0.5362) * 0.11;
+            b6 = white * 0.115926;
+        }
+        
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.loop = true;
+        
+        // High pass to get rushing water sound
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 800;
+        
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 1.5);
+        
+        source.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        source.start();
+        
+        return { source, gainNode };
+    }
+
+    // SCENE 3: Mountain wind (howling/whistling wind)
+    function playMountainSound() {
+        if (!audioCtx) return null;
+        
+        // Deep howling wind - amplitude modulated noise
+        const bufferSize = audioCtx.sampleRate * 4;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+        
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.loop = true;
+        
+        // Low pass for deep rumble
+        const lowFilter = audioCtx.createBiquadFilter();
+        lowFilter.type = 'lowpass';
+        lowFilter.frequency.value = 400;
+        
+        // Amplitude modulation for howling effect
+        const lfo = audioCtx.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.3;
+        const lfoGain = audioCtx.createGain();
+        lfoGain.gain.value = 0.5;
+        
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 2); // Increased from 0.15 to 0.25
+        
+        lfo.connect(lfoGain);
+        lfoGain.connect(gainNode.gain);
+        source.connect(lowFilter);
+        lowFilter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        source.start();
+        lfo.start();
+        
+        // High whistling wind on top
+        const whistle = audioCtx.createOscillator();
+        whistle.type = 'sawtooth';
+        whistle.frequency.setValueAtTime(180, audioCtx.currentTime);
+        whistle.frequency.linearRampToValueAtTime(220, audioCtx.currentTime + 1.5);
+        whistle.frequency.linearRampToValueAtTime(160, audioCtx.currentTime + 3);
+        
+        const whistleFilter = audioCtx.createBiquadFilter();
+        whistleFilter.type = 'bandpass';
+        whistleFilter.frequency.value = 200;
+        whistleFilter.Q.value = 8;
+        
+        const whistleGain = audioCtx.createGain();
+        whistleGain.gain.setValueAtTime(0, audioCtx.currentTime);
+        whistleGain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 1); // Increased from 0.06 to 0.12
+        
+        whistle.connect(whistleFilter);
+        whistleFilter.connect(whistleGain);
+        whistleGain.connect(audioCtx.destination);
+        whistle.start();
+        
+        const mainNode = { source, gainNode };
+        mainNode.additionalNodes = [
+            lfo,
+            { source: whistle, gainNode: whistleGain }
+        ];
+        
+        return mainNode;
+    }
+
+    // SCENE 4: Brand reveal chime
+    function playBrandChime() {
+        if (!audioCtx) return;
+        
+        // Soft bell/chime for brand reveal
+        const frequencies = [523, 659, 784, 1047];
+        frequencies.forEach((freq, i) => {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.value = freq;
+            
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime + i * 0.3);
+            gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + i * 0.3 + 0.1);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.3 + 2);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start(audioCtx.currentTime + i * 0.3);
+            oscillator.stop(audioCtx.currentTime + i * 0.3 + 2);
+        });
+    }
+
+    // Stop a sound node gracefully
+    function fadeOutAndStop(soundObj, duration = 1) {
+        if (!soundObj) return;
+
+        // If it's a raw oscillator/node with a stop function but no gain control
+        if (soundObj.stop && !soundObj.gainNode) {
+            try { soundObj.stop(); } catch(e) {}
+            return;
+        }
+
+        const { source, gainNode, additionalNodes } = soundObj;
+        if (additionalNodes && Array.isArray(additionalNodes)) {
+            additionalNodes.forEach(node => fadeOutAndStop(node, duration));
+        }
+        if (source && !gainNode) {
+            try { source.stop(); } catch(e) {}
+            return;
+        }
+        if (!gainNode) return;
+        try {
+            gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + duration);
+            setTimeout(() => {
+                try { source.stop(); } catch(e) {}
+            }, duration * 1000);
+        } catch(e) {
+            try { source.stop(); } catch(err) {}
+        }
+    }
+
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    function showScene(sceneId) {
+        const scene = document.getElementById(sceneId);
+        if (scene) {
+            scene.style.opacity = '1';
+        }
+    }
+
+    async function crossFade(fromSceneId, toSceneId, durationMs) {
+        const fromScene = document.getElementById(fromSceneId);
+        const toScene = document.getElementById(toSceneId);
+        if (fromScene) {
+            fromScene.style.opacity = '0';
+        }
+        if (toScene) {
+            toScene.style.opacity = '1';
+        }
+        await delay(durationMs);
+    }
+
+    function createStars() {
+        const container = document.getElementById('scene3');
+        if (!container) return;
+        
+        // Remove any existing stars
+        const existingStars = container.querySelectorAll('.star');
+        existingStars.forEach(s => s.remove());
+        
+        for (let i = 0; i < 65; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            const size = Math.floor(Math.random() * 3) + 2; // 2px to 4px
+            const top = Math.random() * 60; // top 60%
+            const left = Math.random() * 100;
+            const delayTime = Math.random() * 3;
+            const duration = 1.5 + Math.random() * 1.5; // 1.5s to 3s
+            const initialOpacity = 0.7 + Math.random() * 0.3; // 0.7 to 1.0
+            
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${top}%`;
+            star.style.left = `${left}%`;
+            star.style.opacity = initialOpacity;
+            star.style.animation = `twinkle ${duration}s ease-in-out infinite`;
+            star.style.animationDelay = `${delayTime}s`;
+            
+            container.appendChild(star);
+        }
+    }
+
+    async function runBrandReveal() {
+        const container = document.getElementById('brand-container');
+        const suffix = document.getElementById('brand-suffix');
+        const tagline = document.getElementById('brand-tagline');
+        
+        const delay = ms => new Promise(r => setTimeout(r, ms));
+        
+        // Step 1: Fade in "MindSafe" (1s)
+        container.style.opacity = '1';
+        suffix.textContent = 'Safe';
+        await delay(2500);
+        
+        // Step 2: Fade in tagline (1s)
+        tagline.style.opacity = '1';
+        await delay(1200);
+        
+        // Step 3: Smooth crossfade Safe → Saved
+        // Fade out "Safe"
+        suffix.style.transition = 'opacity 0.4s ease-in-out';
+        suffix.style.opacity = '0';
+        await delay(400);
+        
+        // Change text while invisible - no gap visible
+        suffix.textContent = 'Saved';
+        
+        // Fade in "Saved"
+        suffix.style.opacity = '1';
+        await delay(2000);
+        
+        // Step 4: Fade out tagline
+        tagline.style.opacity = '0';
+        await delay(800);
+        
+        // Step 5: Smooth crossfade Saved → Safe
+        suffix.style.opacity = '0';
+        await delay(400);
+        suffix.textContent = 'Safe';
+        suffix.style.opacity = '1';
+        await delay(1500);
+        
+        // Step 6: Fade everything out
+        container.style.opacity = '0';
+        await delay(1000);
+    }
+
+    async function runIntro() {
+        initAudio();
+        createStars(); // Dynamic stars for Scene 3
+        
+        // Show Skip button after 2s
+        setTimeout(() => {
+            if (!introFinished) {
+                const skipBtn = document.getElementById('skip-btn');
+                if (skipBtn) skipBtn.classList.add('visible');
+            }
+        }, 2000);
+
+        // Scene 1: Forest - Start forest sound immediately on click (FIX 2)
+        showScene('scene1');
+        currentSound = playForestSound();
+        await delay(3000); // Wait full 3s as specified
+        if (introFinished) return;
+        
+        // Fade forest sound 800ms before scene changes
+        fadeOutAndStop(currentSound, 0.8);
+        await delay(400);
+        if (introFinished) return;
+        
+        // NOW start waterfall EXACTLY as scene fades
+        await crossFade('scene1', 'scene2', 600);
+        if (introFinished) return;
+        currentSound = playWaterfallSound();
+        await delay(2000);
+        if (introFinished) return;
+        
+        // Fade waterfall 600ms before mountain scene
+        fadeOutAndStop(currentSound, 0.6);
+        await delay(300);
+        if (introFinished) return;
+        await crossFade('scene2', 'scene3', 600);
+        if (introFinished) return;
+        currentSound = playMountainSound();
+        await delay(2000);
+        if (introFinished) return;
+        
+        // Mountain fades, chime plays WITH brand scene
+        fadeOutAndStop(currentSound, 1);
+        await crossFade('scene3', 'scene4', 800); // Proper 800ms crossfade (FIX 3)
+        if (introFinished) return;
+        playBrandChime(); // starts exactly when brand appears
+        
+        // Brand reveal animation sequence (FIX 5)
+        runBrandReveal();
+        await delay(10000);
+        if (introFinished) return;
+        
+        // Fade out scene 4
+        const scene4 = document.getElementById('scene4');
+        const skipBtn = document.getElementById('skip-btn');
+        if (scene4) {
+            scene4.style.transition = 'opacity 0.5s ease-in-out';
+            scene4.style.opacity = '0';
+        }
+        if (skipBtn) {
+            skipBtn.style.transition = 'opacity 0.5s ease-in-out';
+            skipBtn.style.opacity = '0';
+        }
+        
+        await delay(500);
+        triggerIntroComplete();
+    }
+
+    function startIntro() {
+        document.getElementById('click-to-start').style.display = 'none';
+        runIntro(); // Start immediately, no setTimeout delay (FIX 4)
+    }
+
+    function triggerIntroComplete() {
+        if (introFinished) return;
+        introFinished = true;
+        
+        // Gracefully clean up audio
+        if (audioCtx) {
+            try { audioCtx.close(); } catch(e) {}
+        }
+        
+        // Hide Skip Button
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.style.opacity = '0';
+            skipBtn.style.pointerEvents = 'none';
+        }
+
+        console.log('Intro complete, loading main app');
+
+        // Call the intro complete callback hook
+        if (typeof window.onIntroComplete === 'function') {
+            window.onIntroComplete();
+        } else if (window.parent && typeof window.parent.onIntroComplete === 'function') {
+            window.parent.onIntroComplete();
+        } else {
+            console.log('Intro complete - window.onIntroComplete not found.');
+        }
+    }
+
+    window.onIntroComplete = function() {
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>
