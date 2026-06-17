@@ -19,7 +19,7 @@ MindSafe is a fully offline, local-first mental wellness companion built on Teth
 | Speech-to-Text | Whisper Large v3 Turbo (`WHISPER_LARGE_V3_TURBO`) |
 | Text-to-Speech | Supertonic TTS (`TTS_EN_SUPERTONIC_Q4_0`) |
 | RAG Embeddings | EmbeddingGemma 300M Q4 (`EMBEDDINGGEMMA_300M_Q4_0`) |
-| OCR | QVAC local OCR plugin |
+| OCR | pdf-parse (PDF) + QVAC OCR (images) |
 
 ## Prerequisites
 

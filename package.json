@@ -1,6 +1,7 @@
 {
   "name": "mindsafe-backend",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Local AI mental health companion app backend",
   "type": "module",
   "main": "electron/main.js",
