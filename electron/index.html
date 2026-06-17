@@ -4066,6 +4066,28 @@
         fadeOutAndStop(currentSound, 1.5)
       }
 
+      // Smoothly fade out HTML5 background music loop
+      const bgMusic = document.getElementById('bg-music');
+      if (bgMusic) {
+        const startVolume = bgMusic.volume;
+        const fadeDuration = 1500; // ms
+        const interval = 50; // ms
+        const steps = fadeDuration / interval;
+        const volumeStep = startVolume / steps;
+        let step = 0;
+        
+        const fadeInterval = setInterval(() => {
+          step++;
+          if (step >= steps) {
+            clearInterval(fadeInterval);
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+          } else {
+            bgMusic.volume = Math.max(0, startVolume - (volumeStep * step));
+          }
+        }, interval);
+      }
+
       // Clean up AudioContext gracefully after fade out
       setTimeout(() => {
         if (audioCtx) {
