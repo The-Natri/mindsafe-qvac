@@ -10,7 +10,7 @@
     },
     "model": "MedPsy-1.7B-Q4_K_M-imat",
     "model_load_time_ms": 3439,
-    "time_to_first_token_ms": 197.70,
+    "time_to_first_token_ms": 197.7,
     "tokens_per_second": 19.44,
     "ctx_size": 4096,
     "prompt": "I have been feeling anxious lately. What should I do?"
@@ -85,9 +85,27 @@
     ],
     "one_time_init_ms": 9479,
     "turns": [
-      {"turn": 1, "ttftMs": 704.9, "tokensPerSec": 17.38, "totalMs": 8272, "responseLength": 521},
-      {"turn": 2, "ttftMs": 365.3, "tokensPerSec": 18.93, "totalMs": 4487, "responseLength": 335},
-      {"turn": 3, "ttftMs": 290.3, "tokensPerSec": 18.15, "totalMs": 3569, "responseLength": 246}
+      {
+        "turn": 1,
+        "ttftMs": 704.9,
+        "tokensPerSec": 17.38,
+        "totalMs": 8272,
+        "responseLength": 521
+      },
+      {
+        "turn": 2,
+        "ttftMs": 365.3,
+        "tokensPerSec": 18.93,
+        "totalMs": 4487,
+        "responseLength": 335
+      },
+      {
+        "turn": 3,
+        "ttftMs": 290.3,
+        "tokensPerSec": 18.15,
+        "totalMs": 3569,
+        "responseLength": 246
+      }
     ],
     "improvement_vs_baseline": "Turn time reduced 68-83% (25.6s->8.3s, 21.0s->4.5s, 13.7s->3.6s)"
   },
@@ -107,6 +125,23 @@
   {
     "timestamp": "2026-06-16",
     "medical_extraction": "Local QVAC OCR - zero cloud dependencies. Fully private."
+  },
+  {
+    "timestamp": "2026-06-17T18:36:10.239Z",
+    "test": "demo_recording_live",
+    "hardware": {
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "gpu": "Intel(R) Iris(R) Xe Graphics",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "prompt": " I have been feeling stressed about work lately.",
+    "prompt_tokens": 782,
+    "response_tokens": 52,
+    "model_load_ms": 10427,
+    "time_to_first_token_ms": 2126.75,
+    "tokens_per_second": 21.41492529691588,
+    "total_latency_ms": 4921
   }
 ]
-

@@ -1,0 +1,4 @@
+{
+  "remote_api_calls": [],
+  "note": "MindSafe operates fully offline using local QVAC SDK models (MedPsy LLM, Whisper STT, TTS, OCR, embeddings). No remote API calls are made during normal operation. The only network access is a one-time optional asset download (nature intro videos/audio) via the postinstall script, which is not part of core app functionality."
+}

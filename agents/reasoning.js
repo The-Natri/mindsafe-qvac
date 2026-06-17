@@ -1,8 +1,14 @@
 import { loadModel, completion, unloadModel } from '@qvac/sdk';
 import { MINDSAFE_SYSTEM_PROMPT } from './system-prompt.js';
 import cleanResponse from '../utils/response-cleaner.js';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import { execSync } from 'child_process';
 
 let reasoningModelId = null;
+let modelLoadTimeMs = null;
+let isFirstTurn = true;
 
 /**
  * Initializes the reasoning engine by loading the MedPsy model once.
@@ -12,6 +18,7 @@ export async function initReasoningEngine() {
   if (reasoningModelId) {
     return reasoningModelId;
   }
+  const loadStart = performance.now();
   reasoningModelId = await loadModel({
     modelSrc: process.env.MEDPSY_MODEL_PATH,
     modelType: 'llamacpp-completion',
@@ -22,6 +29,7 @@ export async function initReasoningEngine() {
       reasoning_budget: 0
     }
   }, { timeout: 180000 });
+  modelLoadTimeMs = Math.round(performance.now() - loadStart);
   return reasoningModelId;
 }
 
@@ -72,6 +80,7 @@ export async function generateResponse(text, ragContext, contextPrompt) {
     builtPrompt += `\n\nRelevant context from your past entries:\n${contextText}`;
   }
 
+  const responseStart = performance.now();
   try {
     // Run completion with history and stream: true
     const run = completion({
@@ -108,6 +117,91 @@ export async function generateResponse(text, ragContext, contextPrompt) {
       tokensPerSec,
       responseLength: cleanedText.length
     }));
+
+    const totalLatencyMs = Math.round(performance.now() - responseStart);
+
+    // If DEMO_LOG environment variable is active, append to docs/benchmark-log.json
+    if (process.env.DEMO_LOG === 'true') {
+      try {
+        const logPath = path.resolve('docs/benchmark-log.json');
+        let logs = [];
+        if (fs.existsSync(logPath)) {
+          const fileData = fs.readFileSync(logPath, 'utf8');
+          try {
+            logs = JSON.parse(fileData);
+          } catch (e) {
+            console.error('Failed to parse benchmark-log.json, starting fresh array', e);
+          }
+        }
+
+        const countWords = (str) => {
+          if (!str) return 0;
+          return str.trim().split(/\s+/).filter(Boolean).length;
+        };
+
+        const getHardwareSpecs = () => {
+          const cpu = os.cpus()[0]?.model || 'Unknown CPU';
+          const ram_gb = Math.round(os.totalmem() / (1024 * 1024 * 1024));
+          
+          const release = os.release();
+          const major = parseInt(release.split('.')[0], 10);
+          const build = parseInt(release.split('.')[2], 10);
+          let osName = os.platform();
+          if (osName === 'win32') {
+            osName = (major === 10 && build >= 22000) ? 'Windows 11' : `Windows ${release}`;
+          } else if (osName === 'darwin') {
+            osName = 'macOS';
+          } else if (osName === 'linux') {
+            osName = 'Linux';
+          }
+
+          let gpu = 'Unknown GPU';
+          try {
+            const output = execSync('wmic path win32_VideoController get name', { stdio: ['pipe', 'pipe', 'ignore'] }).toString();
+            const lines = output.split('\n').map(l => l.trim()).filter(l => l && !l.toLowerCase().includes('name'));
+            if (lines.length > 0) {
+              gpu = lines[0];
+            }
+          } catch (e) {
+            // ignore
+          }
+
+          return { cpu, gpu, ram_gb, os: osName };
+        };
+
+        const entry = {
+          timestamp: new Date().toISOString(),
+          test: 'demo_recording_live',
+          hardware: getHardwareSpecs(),
+          model: 'MedPsy-1.7B-Q4_K_M-imat',
+          prompt: text,
+          prompt_tokens: stats?.promptTokens || countWords(text),
+          response_tokens: stats?.generatedTokens || countWords(cleanedText),
+          time_to_first_token_ms: ttftMs,
+          tokens_per_second: tokensPerSec,
+          total_latency_ms: totalLatencyMs
+        };
+
+        if (isFirstTurn && modelLoadTimeMs !== null) {
+          const orderedEntry = {};
+          for (const [key, val] of Object.entries(entry)) {
+            if (key === 'time_to_first_token_ms') {
+              orderedEntry['model_load_ms'] = modelLoadTimeMs;
+            }
+            orderedEntry[key] = val;
+          }
+          logs.push(orderedEntry);
+        } else {
+          logs.push(entry);
+        }
+
+        fs.writeFileSync(logPath, JSON.stringify(logs, null, 2), 'utf8');
+        console.log(`Demo benchmark logged to ${logPath}`);
+        isFirstTurn = false;
+      } catch (err) {
+        console.error('Error logging demo run capture:', err);
+      }
+    }
 
     // Return response object containing both properties for compatibility
     return {
