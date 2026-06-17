@@ -1,5 +1,8 @@
 [
   {
+    "note": "FIELD CLARIFICATION: 'prompt_tokens' reflects the FULL augmented prompt sent to the model (system instructions + RAG context + user input), tokenized by the QVAC SDK — not just the raw user-facing text shown in the 'prompt' field. The 'prompt' field always shows only the raw user input for readability."
+  },
+  {
     "timestamp": "2026-06-13",
     "test": "medpsy_baseline_completion",
     "hardware": {
