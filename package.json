@@ -8,7 +8,7 @@
     "node": ">=22.17.0"
   },
   "scripts": {
-    "start": "electron --autoplay-policy=no-user-gesture-required .",
+    "start": "cross-env DEMO_LOG=true electron --autoplay-policy=no-user-gesture-required .",
     "postinstall": "node scripts/download-assets.js",
     "download-assets": "node scripts/download-assets.js"
   },
@@ -19,6 +19,7 @@
     "pdf-parse": "^1.1.1"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "electron": "^42.4.0"
   }
 }

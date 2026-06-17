@@ -146,5 +146,23 @@
     "time_to_first_token_ms": 2126.75,
     "tokens_per_second": 21.41492529691588,
     "total_latency_ms": 4921
+  },
+  {
+    "timestamp": "2026-06-17T20:21:56.714Z",
+    "test": "demo_recording_live",
+    "hardware": {
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "gpu": "Intel(R) Iris(R) Xe Graphics",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "prompt": " I've been feeling stressed about work lately.",
+    "prompt_tokens": 797,
+    "response_tokens": 53,
+    "model_load_ms": 4629,
+    "time_to_first_token_ms": 2970.794,
+    "tokens_per_second": 15.525189326754559,
+    "total_latency_ms": 6901
   }
 ]
