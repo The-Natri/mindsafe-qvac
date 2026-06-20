@@ -26,8 +26,9 @@ export async function initSTTEngine() {
         speech_pad_ms: 350
       },
       contextParams: {
-        use_gpu: false,
-        flash_attn: false
+        use_gpu: true,
+        flash_attn: true,
+        gpu_device: 0
       }
     }
   }, { timeout: 180000 });

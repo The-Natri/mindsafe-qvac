@@ -164,5 +164,71 @@
     "time_to_first_token_ms": 2970.794,
     "tokens_per_second": 15.525189326754559,
     "total_latency_ms": 6901
+  },
+  {
+    "timestamp": "2026-06-20T04:09:00.000Z",
+    "test": "stt_gpu_re_enabled_post_dashboard",
+    "hardware": "Intel i7-12700H, Intel Iris Xe (Vulkan), 16GB RAM, Windows 11",
+    "before_fix": {
+      "stt_ms": 21000,
+      "total_turn_ms": 31000
+    },
+    "after_fix": {
+      "stt_ms": 3587,
+      "total_turn_ms": 14417
+    },
+    "note": "GPU offload was disabled during dashboard stabilization to fix a segfault from 3 models loading on GPU simultaneously. Re-enabled GPU for Whisper only, confirmed RAG embedding stays on CPU to avoid the original crash."
+  },
+  {
+    "timestamp": "2026-06-20T04:12:27.498Z",
+    "test": "demo_recording_live",
+    "hardware": {
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "gpu": "Intel(R) Iris(R) Xe Graphics",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "prompt": "hi",
+    "prompt_tokens": 853,
+    "response_tokens": 39,
+    "model_load_ms": 6379,
+    "time_to_first_token_ms": 2265.419,
+    "tokens_per_second": 12.463894653884038,
+    "total_latency_ms": 5871
+  },
+  {
+    "timestamp": "2026-06-20T04:12:55.313Z",
+    "test": "demo_recording_live",
+    "hardware": {
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "gpu": "Intel(R) Iris(R) Xe Graphics",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "prompt": "im feeling good today, donnow why",
+    "prompt_tokens": 800,
+    "response_tokens": 53,
+    "time_to_first_token_ms": 2144.61,
+    "tokens_per_second": 14.961776894499712,
+    "total_latency_ms": 5884
+  },
+  {
+    "timestamp": "2026-06-20T04:14:00.953Z",
+    "test": "demo_recording_live",
+    "hardware": {
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "gpu": "Intel(R) Iris(R) Xe Graphics",
+      "ram_gb": 16,
+      "os": "Windows 11"
+    },
+    "model": "MedPsy-1.7B-Q4_K_M-imat",
+    "prompt": " Hi, my name is Naveen.",
+    "prompt_tokens": 861,
+    "response_tokens": 51,
+    "time_to_first_token_ms": 2412.988,
+    "tokens_per_second": 15.039318972454751,
+    "total_latency_ms": 6020
   }
 ]
