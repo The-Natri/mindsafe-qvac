@@ -110,7 +110,20 @@ export function loadUserContext() {
       const content = fs.readFileSync(JOURNAL_PATH, 'utf8');
       const journal = JSON.parse(content);
       if (Array.isArray(journal)) {
-        recentHistory = journal.slice(-5);
+        // Deduplicate consecutive identical sessions based on their summary text
+        const dedupedJournal = [];
+        for (const session of journal) {
+          if (dedupedJournal.length === 0) {
+            dedupedJournal.push(session);
+          } else {
+            const currentSummary = (session.summary || '').trim();
+            const lastSummary = (dedupedJournal[dedupedJournal.length - 1].summary || '').trim();
+            if (currentSummary !== lastSummary) {
+              dedupedJournal.push(session);
+            }
+          }
+        }
+        recentHistory = dedupedJournal.slice(-5);
       }
     }
   } catch (e) {

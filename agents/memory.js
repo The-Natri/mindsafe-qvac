@@ -53,6 +53,36 @@ export async function saveConversation(turnData) {
   const { transcribedText = '', responseText = '', moodScore, isCrisis = false } = turnData;
 
   try {
+    // Guard against duplicate userMessage within 5000ms
+    if (transcribedText) {
+      const now = Date.now();
+      if (currentSession && currentSession.messages && currentSession.messages.length > 0) {
+        const lastMsg = currentSession.messages[currentSession.messages.length - 1];
+        if (lastMsg.user === transcribedText && (now - lastMsg.timestamp) < 5000) {
+          console.log('Skipping duplicate save in active session');
+          return;
+        }
+      }
+      if (fs.existsSync(JOURNAL_PATH)) {
+        try {
+          const fileContent = fs.readFileSync(JOURNAL_PATH, 'utf8');
+          const journal = JSON.parse(fileContent);
+          if (Array.isArray(journal) && journal.length > 0) {
+            const lastSession = journal[journal.length - 1];
+            if (lastSession && lastSession.messages && lastSession.messages.length > 0) {
+              const lastMsg = lastSession.messages[lastSession.messages.length - 1];
+              if (lastMsg.user === transcribedText && (now - lastMsg.timestamp) < 5000) {
+                console.log('Skipping duplicate save in journal.json');
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Error checking duplicate in journal.json:', err);
+        }
+      }
+    }
+
     if (!currentSession) {
       startSession();
     }
