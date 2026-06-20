@@ -71,7 +71,17 @@ npm start
 | RAM | 16 GB |
 | OS | Windows 11 |
 
-**No dedicated GPU required.** All inference runs CPU-only.
+**No dedicated GPU required.** Fallback to CPU is supported, but Vulkan GPU offload is used by default for the MedPsy LLM and Whisper STT models to achieve sub-15s response latency.
+
+## Performance & Latency
+
+MindSafe utilizes local hardware acceleration (Vulkan) for optimal latency:
+- **Speech-to-Text (STT):** ~3.3–3.8s (GPU accelerated via Vulkan offload)
+- **Conversational Reasoning (LLM):** ~6.5–8.3s (GPU accelerated via Vulkan offload)
+- **Text-to-Speech (TTS):** ~2.5–2.7s (Runs on CPU)
+- **Total Turn Latency:** ~12–15s
+
+*Note: Includes a documented optimization recovery in [`docs/benchmark-log.json`](./docs/benchmark-log.json). Engine stabilization briefly disabled GPU offload for STT, which has since been re-enabled and verified safe.*
 
 ## Data & Privacy
 
